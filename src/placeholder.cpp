@@ -6,34 +6,32 @@
 typedef double numType;
 
 // Initializer + Constructor
-Placeholder::Placeholder(const numType& input) {myVal = input;}
+Placeholder::Placeholder(const numType &input) { myVal = input; }
 
 // This is just for quick fun to re-get into C++
 
 // Output the stored number
-numType Placeholder::getNum() const {return myVal;}
+numType Placeholder::getNum() const { return myVal; }
 
 // Print the stored number
-void Placeholder::printNum() const {
-    std::cout << myVal << std::endl;
-}
+void Placeholder::printNum() const { std::cout << myVal << std::endl; }
 
 // Increase stored number by the input and print the new value
-void Placeholder::incNum(const numType& input) {
-    myVal += input;
-    std::cout << myVal << std::endl;
+void Placeholder::incNum(const numType &input) {
+  myVal += input;
+  std::cout << myVal << std::endl;
 }
 
 // Tests if two placeholders are equal
 bool Placeholder::isEqual(const Placeholder &rhs) const {
-    return myVal == rhs.myVal;
+  return myVal == rhs.myVal;
 }
 
 // Swaps values between placeholder
 void Placeholder::swap(Placeholder &rhs) {
-    numType tmp = myVal;
-    myVal = rhs.myVal;
-    rhs.myVal = tmp;
+  numType tmp = myVal;
+  myVal = rhs.myVal;
+  rhs.myVal = tmp;
 }
 
 /**
@@ -42,9 +40,7 @@ void Placeholder::swap(Placeholder &rhs) {
  *  @param N/A
  *  @return N/A
  */
-void Placeholder::numFlip() {
-    myVal = -myVal;
-}
+void Placeholder::numFlip() { myVal = -myVal; }
 
 /**
  *  This mostly serves as a template for future function notes
@@ -52,8 +48,6 @@ void Placeholder::numFlip() {
  *  @param N/A
  *  @return N/A
  */
-void Placeholder::numInvert() {
-    myVal = 1/myVal;
-}
+void Placeholder::numInvert() { myVal = 1 / myVal; }
 
 #include "../include/placeholder.h"
