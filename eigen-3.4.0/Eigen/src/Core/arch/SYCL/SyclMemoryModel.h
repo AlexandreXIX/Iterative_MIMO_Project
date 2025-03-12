@@ -20,7 +20,7 @@
  *
  **************************************************************************/
 
-#if defined(EIGEN_USE_SYCL) && \
+#if defined(EIGEN_USE_SYCL) &&                                                 \
     !defined(EIGEN_CXX11_TENSOR_TENSOR_SYCL_STORAGE_MEMORY_H)
 #define EIGEN_CXX11_TENSOR_TENSOR_SYCL_STORAGE_MEMORY_H
 
@@ -53,7 +53,7 @@ const sycl_acc_mode default_acc_mode = sycl_acc_mode::read_write;
  *
  */
 class PointerMapper {
- public:
+public:
   using base_ptr_t = std::intptr_t;
 
   /* Structure of a virtual pointer
@@ -116,13 +116,13 @@ class PointerMapper {
      * checking
      */
     virtual_pointer_t(const void *ptr)
-        : m_contents(reinterpret_cast<base_ptr_t>(ptr)){};
+        : m_contents(reinterpret_cast<base_ptr_t>(ptr)) {};
 
     /**
      * Creates a virtual_pointer_t from the given integer
      * number
      */
-    virtual_pointer_t(base_ptr_t u) : m_contents(u){};
+    virtual_pointer_t(base_ptr_t u) : m_contents(u) {};
   };
 
   /* Definition of a null pointer
@@ -203,7 +203,6 @@ class PointerMapper {
     if (this->count() == 0) {
       m_pointerMap.clear();
       EIGEN_THROW_X(std::out_of_range("There are no pointers allocated\n"));
-
     }
     if (is_nullptr(ptr)) {
       m_pointerMap.clear();
@@ -221,7 +220,6 @@ class PointerMapper {
         m_pointerMap.clear();
         EIGEN_THROW_X(
             std::out_of_range("The pointer is not registered in the map\n"));
-
       }
       --node;
     }
@@ -233,8 +231,8 @@ class PointerMapper {
    * Returns a buffer from the map using the pointer address
    */
   template <typename buffer_data_type = buffer_data_type_t>
-  cl::sycl::buffer<buffer_data_type, 1> get_buffer(
-      const virtual_pointer_t ptr) {
+  cl::sycl::buffer<buffer_data_type, 1>
+  get_buffer(const virtual_pointer_t ptr) {
     using sycl_buffer_t = cl::sycl::buffer<buffer_data_type, 1>;
 
     // get_node() returns a `buffer_mem`, so we need to cast it to a `buffer<>`.
@@ -419,13 +417,12 @@ class PointerMapper {
    */
   size_t count() const { return (m_pointerMap.size() - m_freeList.size()); }
 
- private:
+private:
   /* add_pointer_impl.
    * Adds a pointer to the map and returns the virtual pointer id.
    * BufferT is either a const buffer_t& or a buffer_t&&.
    */
-  template <class BufferT>
-  virtual_pointer_t add_pointer_impl(BufferT b) {
+  template <class BufferT> virtual_pointer_t add_pointer_impl(BufferT b) {
     virtual_pointer_t retVal = nullptr;
     size_t bufSize = b.get_count();
     pMapNode_t p{b, bufSize, false};
@@ -537,13 +534,11 @@ inline void SYCLfree(void *ptr, PointerMapper &pMap) {
 /**
  * Clear all the memory allocated by SYCL.
  */
-template <typename PointerMapper>
-inline void SYCLfreeAll(PointerMapper &pMap) {
+template <typename PointerMapper> inline void SYCLfreeAll(PointerMapper &pMap) {
   pMap.clear();
 }
 
-template <cl::sycl::access::mode AcMd, typename T>
-struct RangeAccess {
+template <cl::sycl::access::mode AcMd, typename T> struct RangeAccess {
   static const auto global_access = cl::sycl::access::target::global_buffer;
   static const auto is_place_holder = cl::sycl::access::placeholder::true_t;
   typedef T scalar_t;
@@ -590,22 +585,22 @@ struct RangeAccess {
   }
 
   // THIS IS FOR NULL COMPARISON ONLY
-  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE friend bool operator==(
-      const RangeAccess &lhs, std::nullptr_t) {
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE friend bool
+  operator==(const RangeAccess &lhs, std::nullptr_t) {
     return ((lhs.virtual_ptr_ == -1));
   }
-  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE friend bool operator!=(
-      const RangeAccess &lhs, std::nullptr_t i) {
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE friend bool
+  operator!=(const RangeAccess &lhs, std::nullptr_t i) {
     return !(lhs == i);
   }
 
   // THIS IS FOR NULL COMPARISON ONLY
-  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE friend bool operator==(
-      std::nullptr_t, const RangeAccess &rhs) {
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE friend bool
+  operator==(std::nullptr_t, const RangeAccess &rhs) {
     return ((rhs.virtual_ptr_ == -1));
   }
-  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE friend bool operator!=(
-      std::nullptr_t i, const RangeAccess &rhs) {
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE friend bool
+  operator!=(std::nullptr_t i, const RangeAccess &rhs) {
     return !(i == rhs);
   }
   // Prefix operator (Increment and return value)
@@ -670,15 +665,15 @@ struct RangeAccess {
     return RangeAccess<AcMd, const T>(access_, offset_, virtual_ptr_);
   }
   // binding placeholder accessors to a command group handler for SYCL
-  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE void bind(
-      cl::sycl::handler &cgh) const {
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE void
+  bind(cl::sycl::handler &cgh) const {
     cgh.require(access_);
   }
 
- private:
+private:
   accessor access_;
   size_t offset_;
-  std::intptr_t virtual_ptr_;  // the location of the buffer in the map
+  std::intptr_t virtual_ptr_; // the location of the buffer in the map
 };
 
 template <cl::sycl::access::mode AcMd, typename T>
@@ -687,8 +682,8 @@ struct RangeAccess<AcMd, const T> : RangeAccess<AcMd, T> {
   using Base::Base;
 };
 
-}  // namespace internal
-}  // namespace TensorSycl
-}  // namespace Eigen
+} // namespace internal
+} // namespace TensorSycl
+} // namespace Eigen
 
-#endif  // EIGEN_CXX11_TENSOR_TENSOR_SYCL_STORAGE_MEMORY_H
+#endif // EIGEN_CXX11_TENSOR_TENSOR_SYCL_STORAGE_MEMORY_H

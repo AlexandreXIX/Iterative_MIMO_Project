@@ -4,6 +4,7 @@
 #define ITERATIVE_MIMO_PROJECT_USER_H
 
 #include <cstdint>
+#include <vector>
 
 typedef uint32_t Num;
 
@@ -21,10 +22,16 @@ public:
   // Deconstructor (default)
   ~User() = default;
 
+  // Returns the data within User
+  std::vector<Num> getData() const;
+
+  // Given a data stream, compare to stored data and return accuracy rate
+  double verify(const std::vector<Num> &testVector) const;
+
 private:
   // Data members
   Num time;
-  std::vector <Num> Data;
+  std::vector<Num> Data;
 };
 
 #endif // ITERATIVE_MIMO_PROJECT_USER_H

@@ -5,11 +5,9 @@
 
 // typedef double numType;
 
-
 #include "../include/System.h"
 
-System::System(const Num &userCount, const Num &receiverCount, const Num &time) {
-}
+System::System(const Num &userCount, const Num &receiverCount,
+               const Num &time) {}
 
-System::~System() {
-}
+System::~System() {}
