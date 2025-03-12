@@ -1,0 +1,14 @@
+What classes should be used?
+The system is as follows:
+User -> Create (random) data to transmit -> Convert to constellation -> Convert into MIMO-OFDM -> Transmit through channel -> Decode -> Return to serial data (compare to original data for accuracy test)
+However, this is multi-user transmission, so it is a bit more complicated.
+Therefore, the following objects are necessary:
+User: that carries a certain data signal they want transmitted of length T
+System: Contains n_t User items
+    - initialize: n_t Users are generated, creating signals between 1 and M for time T
+    - encode: Collects data from each user, and encodes it into an n_t x T matrix (constellation + OFDM)
+    - transmit: Adds Rayleigh fading and noise to the matrix, resulting in n_r x T matrix
+    - decode: takes in a seperated Decoder object (allows for multiple decoder methods)
+    - verification: send decoded message to each User so that they can confirm accuracy
+Decoder: Simple objects that really serve as functions, but creating them as objects allows for simple testing of
+    multiple decoding methods. Takes in an n_r x T matrix and returns an n_t x T matrix
