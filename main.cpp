@@ -71,21 +71,6 @@ VectorXd beliefPropagation(const MatrixXd &H, const VectorXd &y) {
 }
 
 int main() {
-  // Test Users
-  // Need to take the time to create a seperate test file
-  User const User1(100, 256);
-  std::vector<uint32_t> myData = User1.getData();
-  cout << "User Data: " << endl;
-  for (Num const &sample : myData) {
-    cout << sample << ' ';
-  }
-  cout << endl;
-  cout << "No Change Accuracy Test: " << User1.verify(myData) << endl;
-  myData[1] = 0; // Should not be possible
-  cout << "1/100 Change Accuracy Test: " << User1.verify(myData) << endl;
-  std::vector<uint32_t> badData = {0, 0, 0};
-  cout << "Wrong Array Accuracy Test: " << User1.verify(badData) << endl;
-  // This outputs the error text, but only at the end of the terminal output
 
   // Placeholder Matrix Test
   // Generate MIMO channel

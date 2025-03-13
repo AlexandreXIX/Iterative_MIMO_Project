@@ -4,6 +4,8 @@
 #include <iostream>
 #include <random>
 
+typedef uint32_t Num;
+
 User::User(const Num &time, const Num &dim) : time(time), Data(time) {
   // Initialize a random number generator
   std::random_device rd;  // a seed source for the random number engine
@@ -19,10 +21,11 @@ User::User(const Num &time, const Num &dim) : time(time), Data(time) {
 std::vector<Num> User::getData() const { return Data; }
 
 double User::verify(const std::vector<Num> &testVector) const {
-  uint32_t testSize = testVector.size();
+  uint32_t const testSize = testVector.size();
   if (testSize != time) {
-    std::cerr << "test vector size mismatch" << std::endl;
-    return 0;
+    throw std::length_error(
+        "Array sizes must match for comparison: " + std::to_string(testSize) +
+        " vs " + std::to_string(time));
   }
   double accuracy = 0;
   for (uint32_t i = 0; i < testSize; i++) {
