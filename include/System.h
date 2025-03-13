@@ -4,10 +4,7 @@
 #define ITERATIVE_MIMO_PROJECT_SYSTEM_H
 
 #include "User.h"
-#include <cstdint>
-#include <vector>
-
-typedef uint32_t Num;
+typedef int Num; // can switch to uint32_t if necessary
 
 class System {
 public:
@@ -22,7 +19,7 @@ public:
   System &operator=(const System &rhs) = delete;
 
   // Deconstructor (delete each user)
-  ~System();
+  ~System() = default;
 
 private:
   Num userCount;

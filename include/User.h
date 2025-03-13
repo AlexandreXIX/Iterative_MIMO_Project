@@ -3,10 +3,9 @@
 #ifndef ITERATIVE_MIMO_PROJECT_USER_H
 #define ITERATIVE_MIMO_PROJECT_USER_H
 
-#include <cstdint>
 #include <vector>
 
-typedef uint32_t Num;
+typedef int Num; // can switch to uint32_t if necessary
 
 class User {
 public:
@@ -14,7 +13,7 @@ public:
   explicit User(const Num &time, const Num &dim);
 
   // Copy Constructor (banned)
-  User(const User &rhs) = delete;
+  User(const User &rhs) = default;
 
   // Assignment Operator (banned)
   User &operator=(const User &rhs) = delete;

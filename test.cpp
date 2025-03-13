@@ -1,6 +1,8 @@
 // @author Alexandre P.J. Dixneuf
 #include "src/User.cpp"
+#include "src/System.cpp"
 
+typedef int Num;
 using namespace std;
 
 // This function tests the User class
@@ -8,13 +10,13 @@ using namespace std;
 bool testUsers() {
   bool testResult = true;
   // Run the test on a large sample of time slots and QAM constellation values
-  for (uint32_t T = 1; T <= 100; T++) {
-    for (uint32_t M = 1; M <= 2048; M = M * 2) {
+  for (Num T = 1; T <= 100; T++) {
+    for (Num M = 1; M <= 2048; M = M * 2) {
       User const User1(T, M);
 
       // Test 1:
       // Each user will contain T data points, all between 1 and M
-      std::vector<uint32_t> myData = User1.getData();
+      std::vector<Num> myData = User1.getData();
       for (Num const &sample : myData) {
         if (sample < 1 || sample > M) {
           testResult = false; // for debugging, can add a breakpoint here
@@ -66,6 +68,19 @@ bool testUsers() {
       } catch (...) {
         testResult = false; // Error thrown, but not expected error
       }
+
+      // Test 6:
+      // Test that each User is independently randomly generated
+      // Only run tests when enough data points to avoid false positives (need enough constellation size and time)
+      if (M > 1 && T > 5) {
+        if (User const User2(T, M); User1.getData() == User2.getData()) {
+          testResult = false;
+        }
+      }
+
+      // Test 7:
+      // Test default copy constructor to ensure it is a deep copy
+      // Required some memory viewing to verify addresses are different, so hard to rerun, but passed
     }
   }
   return testResult;
@@ -81,6 +96,7 @@ string testResult(const bool &testResult) {
 }
 
 int main() {
+  System testSystem(10, 1, 5, 4);
   cout << "User Test: " << testResult(testUsers()) << endl;
   return 0;
 }
