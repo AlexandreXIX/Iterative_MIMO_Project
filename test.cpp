@@ -1,6 +1,6 @@
 // @author Alexandre P.J. Dixneuf
-#include "src/User.cpp"
 #include "src/System.cpp"
+#include "src/User.cpp"
 
 typedef int Num;
 using namespace std;
@@ -10,15 +10,15 @@ using namespace std;
 bool testUsers() {
   bool testResult = true;
   // Run the test on a large sample of time slots and QAM constellation values
-  for (Num T = 1; T <= 100; T++) {
-    for (Num M = 1; M <= 2048; M = M * 2) {
-      User const User1(T, M);
+  for (Num t = 1; t <= 100; ++t) {
+    for (Num m = 1; m <= 2048; m = m * 2) {
+      User const User1(t, m);
 
       // Test 1:
       // Each user will contain T data points, all between 1 and M
       std::vector<Num> myData = User1.getData();
       for (Num const &sample : myData) {
-        if (sample < 1 || sample > M) {
+        if (sample < 1 || sample > m) {
           testResult = false; // for debugging, can add a breakpoint here
         }
       }
@@ -43,7 +43,7 @@ bool testUsers() {
       // If I change a value in the array, the User accuracy determines the
       // accuracy
       constexpr double errorCount = 1;
-      double const expectedAccuracy = (T - errorCount) / T;
+      double const expectedAccuracy = (t - errorCount) / t;
       myData[0] = 0;
       if (User1.verify(myData) != expectedAccuracy) {
         testResult = false;
@@ -71,16 +71,18 @@ bool testUsers() {
 
       // Test 6:
       // Test that each User is independently randomly generated
-      // Only run tests when enough data points to avoid false positives (need enough constellation size and time)
-      if (M > 1 && T > 5) {
-        if (User const User2(T, M); User1.getData() == User2.getData()) {
+      // Only run tests when enough data points to avoid false positives (need
+      // enough constellation size and time)
+      if (m > 1 && t > 5) {
+        if (User const User2(t, m); User1.getData() == User2.getData()) {
           testResult = false;
         }
       }
 
       // Test 7:
       // Test default copy constructor to ensure it is a deep copy
-      // Required some memory viewing to verify addresses are different, so hard to rerun, but passed
+      // Required some memory viewing to verify addresses are different, so hard
+      // to rerun, but passed
     }
   }
   return testResult;

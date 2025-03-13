@@ -1,10 +1,8 @@
 // @author Alexandre P.J. Dixneuf
+#include "src/System.cpp"
 #include "src/placeholder.cpp"
-// #include "src/System.cpp"
-#include "src/User.cpp"
-#include <Eigen/Dense>
+
 #include <iostream>
-#include <random>
 #include <vector>
 
 typedef double numType;
@@ -102,7 +100,7 @@ int main() {
   std::cout << "What happens if I change either the initial val or the tester? "
                "Can it still automatically print the 4?"
             << std::endl;
-  tester++;
+  ++tester;
   FirstVal = 10;
   a.printNum();
   std::cout << "Now we increase it by 0.8 to get 4.8" << std::endl;

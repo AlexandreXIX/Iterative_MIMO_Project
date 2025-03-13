@@ -10,7 +10,7 @@ typedef int Num; // can switch to uint32_t if necessary
 class User {
 public:
   // Initializer + Constructor
-  explicit User(const Num &time, const Num &dim);
+  explicit User(const Num &T, const Num &M);
 
   // Copy Constructor (banned)
   User(const User &rhs) = default;
@@ -29,7 +29,7 @@ public:
 
 private:
   // Data members
-  Num time;
+  Num T;
   std::vector<Num> Data;
 };
 
