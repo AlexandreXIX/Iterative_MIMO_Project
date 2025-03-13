@@ -98,7 +98,7 @@ string testResult(const bool &testResult) {
 }
 
 int main() {
-  System testSystem(10, 1, 5, 4);
+  System testSystem(3, 2, 5, 256);
   cout << "User Test: " << testResult(testUsers()) << endl;
   return 0;
 }

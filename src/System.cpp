@@ -1,6 +1,7 @@
 // @author Alexandre P.J. Dixneuf
 
 #include "../include/System.h"
+#include <iostream>
 #include <random>
 
 typedef int Num;
@@ -12,6 +13,9 @@ System::System(const Num &N_t, const Num &N_r, const Num &T, const Num &M)
     Users.emplace_back(T, M);
   }
   GenerateChannelConditions();
+  // TODO - remove temporary line
+  std::cout << "Here is the matrix H:\n" << H << std::endl;
+  std::cout << "Here is the matrix z:\n" << z << std::endl;
 }
 
 // Generates the random channel conditions
@@ -32,7 +36,11 @@ void System::GenerateChannelConditions() {
     }
     // H and z have same number of rows, so this optimizes for loops
     for (int t = 0; t < T; ++t) {
-      z(i, t) = dist(gen);
+      double const real = dist(gen);
+      double const imag = dist(gen);
+      auto comp = std::complex(real, imag);
+      // sqrt(0.5) due to complex Gaussian random stuff
+      z(i, t) = std::sqrt(0.5) * comp;
     }
   }
 }
