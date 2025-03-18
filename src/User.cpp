@@ -14,7 +14,9 @@ User::User(const Num &T, const Num &M) : T(T), Data(T) {
   }
 }
 
-std::vector<Num> User::getData() const { return Data; }
+std::vector<Num> User::copyData() const { return Data; }
+
+std::vector<Num> &User::getData() { return Data; }
 
 double User::verify(const std::vector<Num> &testVector) const {
   Num const testSize = testVector.size();

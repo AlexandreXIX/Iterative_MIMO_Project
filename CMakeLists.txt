@@ -2,7 +2,11 @@ cmake_minimum_required(VERSION 3.24)
 project(Iterative_MIMO_Project)
 
 set(CMAKE_CXX_STANDARD 17)
-include_directories(./include ./eigen-3.4.0)
+include_directories(./include ./eigen-3.4.0 ./decoders)
+
+# Automatically detect all decoders
+# This means future users only need to add the .cpp and never touch CmakeLists.txt
+#aux_source_directory(decoders DECODER_FILES)
 
 # Add main executable
 add_executable(Iterative_MIMO_Project main.cpp src/User.cpp src/System.cpp)

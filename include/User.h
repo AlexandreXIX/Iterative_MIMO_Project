@@ -24,7 +24,10 @@ public:
   ~User() = default;
 
   // Returns the data within User
-  std::vector<Num> getData() const;
+  std::vector<Num> copyData() const;
+
+  // Returns a pointer to the data within User
+  std::vector<Num> &getData();
 
   // Given a data stream, compare to stored data and return accuracy rate
   double verify(const std::vector<Num> &testVector) const;

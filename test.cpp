@@ -16,7 +16,7 @@ bool testUsers() {
 
       // Test 1:
       // Each user will contain T data points, all between 1 and M
-      std::vector<Num> myData = User1.getData();
+      std::vector<Num> myData = User1.copyData();
       for (Num const &sample : myData) {
         if (sample < 1 || sample > m) {
           testResult = false; // for debugging, can add a breakpoint here
@@ -35,7 +35,7 @@ bool testUsers() {
         sample = sample - 2;
         sample = sample / 2;
       }
-      if (User1.getData() != myData || User1.verify(myData) != 1) {
+      if (User1.copyData() != myData || User1.verify(myData) != 1) {
         testResult = false;
       }
 
@@ -53,7 +53,7 @@ bool testUsers() {
       // Changes to the copy of the User's data does not change the User
       // (properly handles const) (technically redundant) myData[0] = 0
       // determined above
-      if (User1.getData()[0] == 0) {
+      if (User1.copyData()[0] == 0) {
         testResult = false;
       }
 
@@ -74,7 +74,7 @@ bool testUsers() {
       // Only run tests when enough data points to avoid false positives (need
       // enough constellation size and time)
       if (m > 1 && t > 5) {
-        if (User const User2(t, m); User1.getData() == User2.getData()) {
+        if (User const User2(t, m); User1.copyData() == User2.copyData()) {
           testResult = false;
         }
       }
