@@ -1,6 +1,6 @@
 // @author Alexandre P.J. Dixneuf
 
-#include "../include/User.h"
+#include "User.h"
 
 User::User(const Num &T, const Num &M) : T(T), Data(T) {
   // Initialize a random number generator
@@ -31,5 +31,3 @@ double User::verify(const std::vector<Num> &testVector) const {
   }
   return accuracy / testSize;
 }
-
-#include "../include/User.h"

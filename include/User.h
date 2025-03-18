@@ -1,7 +1,7 @@
 // @author Alexandre P.J. Dixneuf
 
-#ifndef ITERATIVE_MIMO_PROJECT_USER_H
-#define ITERATIVE_MIMO_PROJECT_USER_H
+#ifndef USER_H
+#define USER_H
 
 #include <iostream>
 #include <random>
@@ -35,4 +35,4 @@ private:
   std::vector<Num> Data;
 };
 
-#endif // ITERATIVE_MIMO_PROJECT_USER_H
+#endif // USER_H

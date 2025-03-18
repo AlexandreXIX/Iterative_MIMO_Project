@@ -1,6 +1,6 @@
 // @author Alexandre P.J. Dixneuf
 
-#include "../include/System.h"
+#include "System.h"
 
 typedef int Num;
 
@@ -41,4 +41,8 @@ void System::GenerateChannelConditions() {
       z(i, t) = std::sqrt(0.5) * comp;
     }
   }
+}
+
+// Takes all the Users' messages, compiles it into matrix X, and converts to QAM
+void System::GenerateXQAM() {
 }

@@ -1,7 +1,7 @@
 // @author Alexandre P.J. Dixneuf
 
-#ifndef ITERATIVE_MIMO_PROJECT_SYSTEM_H
-#define ITERATIVE_MIMO_PROJECT_SYSTEM_H
+#ifndef SYSTEM_H
+#define SYSTEM_H
 
 #include "User.h"
 #include <Eigen/Dense>
@@ -27,10 +27,10 @@ private:
   // Separate function to de-clutter constructor function
   void GenerateChannelConditions();
 
-  // Converts an integer to QAM
-  // TODO
+  // Takes all the Users' messages, compiles it into matrix X, and converts to QAM
+  void GenerateXQAM();
 
-  // Converts QAM to integere
+  // Converts QAM to integer
   // TODO
 
   // Generates X from users
@@ -47,4 +47,4 @@ private:
   Eigen::MatrixXcd z;
 };
 
-#endif // ITERATIVE_MIMO_PROJECT_SYSTEM_H
+#endif // SYSTEM_H
