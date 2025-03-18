@@ -27,9 +27,11 @@ private:
   // Separate function to de-clutter constructor function
   void GenerateChannelConditions();
 
-  // Takes all the Users' messages, compiles it into matrix X, and converts to
-  // QAM
-  Eigen::MatrixXcd GenerateXQAM();
+  // Takes all the Users' messages, compiles it into matrix X (ints)
+  void GenerateXInt();
+
+  // Takes X in integers and converts to QAM (gray-code)
+  void GenerateXQAM();
 
   // Converts QAM to integer
   // TODO
@@ -45,7 +47,8 @@ private:
   Num M;
   std::vector<User> Users;
   Eigen::MatrixXcd H;
-  Eigen::MatrixXcd X;
+  Eigen::MatrixXi X_int;
+  Eigen::MatrixXcd X_QAM;
   Eigen::MatrixXcd z;
 };
 

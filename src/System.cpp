@@ -6,23 +6,26 @@
 typedef int Num;
 
 System::System(const Num &N_t, const Num &N_r, const Num &T, const Num &M)
-    : N_t(N_t), N_r(N_r), T(T), M(M), H(N_r, N_t), X(N_t, T), z(N_r, T) {
-  // TODO - instead of having error checks at each point, check all here
-  // (example: M perfect square)
+    : N_t(N_t), N_r(N_r), T(T), M(M), H(N_r, N_t), X_int(N_t, T), X_QAM(N_t, T), z(N_r, T) {
+  // First, obvious error checks
+  if (sqrt(M) * sqrt(M) != M) {
+    throw std::invalid_argument("M must be a perfect square (e.g., 4, 16, 64, etc.).");
+  }
+  // Now, construct
   Users.reserve(N_t);
   for (Num i = 0; i < N_t; i++) {
     Users.emplace_back(T, M);
   }
   GenerateChannelConditions();
-  // TODO - rather than assign, immediately set
-  X = GenerateXQAM();
+  GenerateXInt();
+  GenerateXQAM();
 
   // TODO - remove temporary line
   std::cout << "Here is the matrix H:\n" << H << std::endl;
-  std::cout << "Here is the matrix X:\n" << X << std::endl;
+  std::cout << "Here is the matrix X in int:\n" << X_int << std::endl;
+  std::cout << "Here is the matrix X in QAM:\n" << X_QAM << std::endl;
   std::cout << "Here is the matrix z:\n" << z << std::endl;
-  // TODO - fix, this is QAM
-  std::cout << "Here is the matrix Y:\n" << (H * X) + z << std::endl;
+  std::cout << "Here is the matrix Y:\n" << (H * X_QAM) + z << std::endl;
 }
 
 // Generates the random channel conditions
@@ -52,31 +55,37 @@ void System::GenerateChannelConditions() {
   }
 }
 
-// Takes all the Users' messages, compiles it into matrix X, and converts to QAM
-Eigen::MatrixXcd System::GenerateXQAM() {
-  // Generate the integer version of X
-  Eigen::MatrixXi X_ints = Eigen::MatrixXi::Zero(N_t, T);
+// Takes all the Users' messages, compiles it into matrix X (ints)
+void System::GenerateXInt() {
   // For each row, which will correspond to each user
   for (int user_idx = 0; user_idx < N_t; ++user_idx) {
     std::vector<Num> &currentData = Users[user_idx].getData();
     // For each column, which corresponds to each timestep of a user
     for (int t = 0; t < T; ++t) {
-      X_ints(user_idx, t) = currentData[t];
+      X_int(user_idx, t) = currentData[t];
     }
   }
-  // Convert to QAM
-  int sqrtM = sqrt(M);
-  // TODO - add to constructor
-  // if (sqrtM * sqrtM != M) {
-  //  throw invalid_argument("M must be a perfect square (e.g., 4, 16, 64,
-  //  etc.).");
-  //}
+}
+
+// Takes X in integers and converts to QAM (gray-code)
+void System::GenerateXQAM() {
+  int sqrtM = sqrt(M); // Guaranteeed to be int thanks to error catching in constructor
   double normFactor =
       sqrt((2.0 * (M - 1)) / 3.0); // Normalization for unit power
-  Eigen::MatrixXcd X_QAM(N_t, T);
+  // Generate Gray code
+  std::vector<int> grayCode(1 << sqrtM);
+  for (int i = 0; i < (1 << sqrtM); i++) {grayCode[i] = i ^ (i >> 1);}
+
+
+
+
+
   for (int i = 0; i < N_t; i++) {
     for (int j = 0; j < T; j++) {
-      int symbol = X_ints(i, j) - 1; // Convert 1-based index to 0-based
+      // TODO - verify if this code works
+      // TODO - fix error, uses in-order encoding instead of grey-code
+      // TODO - just create seperate alphabet
+      int symbol = X_int(i, j) - 1; // Convert 1-based index to 0-based
 
       int row = symbol / sqrtM; // Get row index in constellation
       int col = symbol % sqrtM; // Get column index in constellation
@@ -87,5 +96,5 @@ Eigen::MatrixXcd System::GenerateXQAM() {
       X_QAM(i, j) = std::complex<double>(I, Q) / normFactor;
     }
   }
-  return X_QAM;
 }
+
