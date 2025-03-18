@@ -98,7 +98,8 @@ string testResult(const bool &testResult) {
 }
 
 int main() {
-  System testSystem(3, 2, 5, 256);
   cout << "User Test: " << testResult(testUsers()) << endl;
+  // TODO - add more comprehensive tests
+  System testSystem(3, 2, 5, 256);
   return 0;
 }

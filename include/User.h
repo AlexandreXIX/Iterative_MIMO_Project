@@ -3,6 +3,8 @@
 #ifndef ITERATIVE_MIMO_PROJECT_USER_H
 #define ITERATIVE_MIMO_PROJECT_USER_H
 
+#include <iostream>
+#include <random>
 #include <vector>
 
 typedef int Num; // can switch to uint32_t if necessary

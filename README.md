@@ -6,8 +6,8 @@ Student: Alexandre P. J. Dixneuf
 Step 1: Baseline (TO-DO)
 ------------
 
-To begin, both Belief Propogation (BP) and GaBP will be implemented as a general baseline of the performance of Massive 
-MIMO systems. It is expected torederive all intermediate equations leading to final messages expressions 
+To begin, both Belief Propagation (BP) and GaBP will be implemented as a general baseline of the performance of Massive 
+MIMO systems. It is expected to re-derive all intermediate equations leading to final messages expressions 
 (variable to function nodes, function to variable nodes in the FG).
 
 Step 2: Group-wise (TO-DO)

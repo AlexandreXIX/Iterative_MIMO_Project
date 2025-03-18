@@ -1,8 +1,6 @@
 // @author Alexandre P.J. Dixneuf
 
 #include "../include/System.h"
-#include <iostream>
-#include <random>
 
 typedef int Num;
 

@@ -1,7 +1,6 @@
 // @author Alexandre P.J. Dixneuf
 
 #include "../include/placeholder.h"
-#include <iostream>
 
 typedef double numType;
 
@@ -49,5 +48,3 @@ void Placeholder::numFlip() { myVal = -myVal; }
  *  @return N/A
  */
 void Placeholder::numInvert() { myVal = 1 / myVal; }
-
-#include "../include/placeholder.h"

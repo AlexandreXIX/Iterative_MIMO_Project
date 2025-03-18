@@ -1,8 +1,6 @@
 // @author Alexandre P.J. Dixneuf
 
 #include "../include/User.h"
-#include <iostream>
-#include <random>
 
 User::User(const Num &T, const Num &M) : T(T), Data(T) {
   // Initialize a random number generator

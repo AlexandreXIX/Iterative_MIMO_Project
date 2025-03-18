@@ -9,3 +9,6 @@ add_executable(Iterative_MIMO_Project main.cpp)
 
 # Add test executable (only built when needed)
 add_executable(my_tests test.cpp)
+
+# Add test executable (only built when needed)
+add_executable(placeholder_tests placeholder_test.cpp)

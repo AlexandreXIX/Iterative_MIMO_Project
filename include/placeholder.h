@@ -1,9 +1,10 @@
 // @author Alexandre P.J. Dixneuf
 
-#ifndef ITERATIVE_MIMO_PROJECT_PLACEHOLDER_H
-#define ITERATIVE_MIMO_PROJECT_PLACEHOLDER_H
+#ifndef PLACEHOLDER_H
+#define PLACEHOLDER_H
 
 #include <cstdint>
+#include <iostream>
 
 typedef double numType;
 
