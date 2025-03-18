@@ -30,6 +30,17 @@ private:
   // Takes all the Users' messages, compiles it into matrix X (ints)
   void GenerateXInt();
 
+  // Generate the Gray-Code, store to keep consistent
+  // Note: exact encoding not too important, consistency is
+  void GenerateGrayCode();
+
+  // Helper function
+  // Converts individual ints to QAM
+  std::complex<double> IntToQAM(Num int_value);
+
+  // Creates a gray-code QAM constellation
+  void QAMGenerator();
+
   // Takes X in integers and converts to QAM (gray-code)
   void GenerateXQAM();
 
@@ -45,11 +56,14 @@ private:
   Num N_r;
   Num T;
   Num M;
+  Num N;
   std::vector<User> Users;
   Eigen::MatrixXcd H;
   Eigen::MatrixXi X_int;
   Eigen::MatrixXcd X_QAM;
   Eigen::MatrixXcd z;
+  std::vector<std::vector<Num>> GrayCodeGrid;
+  std::vector<Num> GrayCodeVector;
 };
 
 #endif // SYSTEM_H

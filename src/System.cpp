@@ -2,13 +2,14 @@
 
 #include "System.h"
 #include <complex>
+#include <bitset>
 
 typedef int Num;
 
 System::System(const Num &N_t, const Num &N_r, const Num &T, const Num &M)
-    : N_t(N_t), N_r(N_r), T(T), M(M), H(N_r, N_t), X_int(N_t, T), X_QAM(N_t, T), z(N_r, T) {
+    : N_t(N_t), N_r(N_r), T(T), M(M), N(std::sqrt(M)), H(N_r, N_t), X_int(N_t, T), X_QAM(N_t, T), z(N_r, T), GrayCodeGrid(N, std::vector<Num>(N)), GrayCodeVector(M) {
   // First, obvious error checks
-  if (sqrt(M) * sqrt(M) != M) {
+  if (N * N != M) {
     throw std::invalid_argument("M must be a perfect square (e.g., 4, 16, 64, etc.).");
   }
   // Now, construct
@@ -18,11 +19,19 @@ System::System(const Num &N_t, const Num &N_r, const Num &T, const Num &M)
   }
   GenerateChannelConditions();
   GenerateXInt();
+  GenerateGrayCode();
   GenerateXQAM();
 
   // TODO - remove temporary line
   std::cout << "Here is the matrix H:\n" << H << std::endl;
   std::cout << "Here is the matrix X in int:\n" << X_int << std::endl;
+  std::cout << "Here is the Gray-code:\n";
+  for (int i = 0; i < M; i++) {
+    std::bitset<4> myBits(GrayCodeVector[i]);
+    std::cout << GrayCodeVector[i] << " ";
+    std::cout << myBits << " ";
+  }
+  std::cout << std::endl;
   std::cout << "Here is the matrix X in QAM:\n" << X_QAM << std::endl;
   std::cout << "Here is the matrix z:\n" << z << std::endl;
   std::cout << "Here is the matrix Y:\n" << (H * X_QAM) + z << std::endl;
@@ -67,33 +76,60 @@ void System::GenerateXInt() {
   }
 }
 
+// Generate the Gray-Code, store to keep consistent
+// Note: exact encoding not too important, consistency is
+void System::GenerateGrayCode() {
+  // Generate initial
+  std::vector<Num> tmpVector(M);
+  for (int i = 0; i < M; i++) {
+    tmpVector[i] = (i ^ (i >> 1)); // Generating Gray code
+  }
+  // Problem is this fails when on a grid
+  // Easier to make grid and then back into vector
+  int index = 0;
+  for (int i = 0; i < N; i++) {
+    // Left to right
+    if (i % 2 == 0) {for (int j = 0; j < N; j++) {GrayCodeGrid[i][j] = tmpVector[index++];} }
+    // Right to left (snake pattern)
+    else {for (int j = N - 1; j >= 0; j--) {GrayCodeGrid[i][j] = tmpVector[index++];} }
+  }
+  // Now set it as vector
+  index = 0;
+  for (int row = 0; row < N; row++) {
+    for (int col = 0; col < N; col++) {
+      GrayCodeVector[index++] = GrayCodeGrid[row][col];
+    }
+  }
+}
+
+// Helper function
+// Converts individual ints to QAM
+std::complex<double> System::IntToQAM(Num int_value) {
+  // TODO - fix this, completely wrong
+  // Find max magnitude (same for real or img)
+  int max_mag = (N-1)/2;
+  // First, imaginary, left to right, -max to max, +2 at each step
+  int row = int_value / N;
+  int col = int_value % N;
+  // Map using Gray code
+  const int I = GrayCodeVector[col];
+  const int Q = GrayCodeVector[row];
+  // Convert to complex
+  const double x = 2.0 * I - (N - 1);
+  const double y = -(2.0 * Q - (N - 1));
+  return {x, y};
+}
+
+
 // Takes X in integers and converts to QAM (gray-code)
 void System::GenerateXQAM() {
   int sqrtM = sqrt(M); // Guaranteeed to be int thanks to error catching in constructor
-  double normFactor =
-      sqrt((2.0 * (M - 1)) / 3.0); // Normalization for unit power
-  // Generate Gray code
-  std::vector<int> grayCode(1 << sqrtM);
-  for (int i = 0; i < (1 << sqrtM); i++) {grayCode[i] = i ^ (i >> 1);}
-
-
-
-
-
-  for (int i = 0; i < N_t; i++) {
-    for (int j = 0; j < T; j++) {
-      // TODO - verify if this code works
-      // TODO - fix error, uses in-order encoding instead of grey-code
-      // TODO - just create seperate alphabet
-      int symbol = X_int(i, j) - 1; // Convert 1-based index to 0-based
-
-      int row = symbol / sqrtM; // Get row index in constellation
-      int col = symbol % sqrtM; // Get column index in constellation
-
-      double I = 2 * col - (sqrtM - 1); // Map to I component
-      double Q = (sqrtM - 1) - 2 * row; // Map to Q component (inverted axis)
-
-      X_QAM(i, j) = std::complex<double>(I, Q) / normFactor;
+  // Normalization for unit power
+  double normFactor = sqrt((2.0 * (M - 1)) / 3.0);
+  // Calculate every value
+  for (int R = 0; R < N_t; R++) {
+    for (int C = 0; C < T; C++) {
+      X_QAM(R, R) = IntToQAM(X_int(R,C)) / normFactor;
     }
   }
 }
