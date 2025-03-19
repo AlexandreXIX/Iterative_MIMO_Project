@@ -40,6 +40,15 @@ System::System(const Num &N_t, const Num &N_r, const Num &T, const Num &M)
   std::cout << "Here is the matrix X in QAM:\n" << X_QAM << std::endl;
   std::cout << "Here is the matrix z:\n" << z << std::endl;
   std::cout << "Here is the matrix Y:\n" << (H * X_QAM) + z << std::endl;
+
+  // Calculate average power
+  double powerTracker = 0;
+  for (Num i = 0; i < N_t; i++) {
+    for (Num j = 0; j < T; j++) {
+      powerTracker = powerTracker + pow(X_QAM(i,j).real(),2) + pow(X_QAM(i,j).imag(),2);
+    }
+  }
+  std::cout << "Here is the average X power:\n" << powerTracker/(N_t*T) << std::endl;
 }
 
 // Generates the random channel conditions
@@ -131,14 +140,12 @@ std::complex<double> System::IntToQAM(Num int_value) {
 
 // Takes X in integers and converts to QAM (gray-code)
 void System::GenerateXQAM() {
-  int sqrtM = sqrt(M); // Guaranteeed to be int thanks to error catching in constructor
   // Normalization for unit power
-  double normFactor = sqrt((2.0 * (M - 1)) / 3.0);
+  const double normFactor = sqrt((2.0 * (M - 1)) / 3.0);
   // Calculate every value
   for (int R = 0; R < N_t; R++) {
     for (int C = 0; C < T; C++) {
-      // TODO - use normFactor
-      X_QAM(R, C) = IntToQAM(X_int(R,C));
+      X_QAM(R, C) = IntToQAM(X_int(R,C)) / normFactor;
     }
   }
 }

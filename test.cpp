@@ -101,6 +101,6 @@ string testResult(const bool &testResult) {
 int main() {
   cout << "User Test: " << testResult(testUsers()) << endl;
   // TODO - add more comprehensive tests
-  System testSystem(3, 2, 10, 256);
+  System testSystem(4, 2, 5, 16);
   return 0;
 }
