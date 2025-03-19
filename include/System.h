@@ -63,7 +63,6 @@ private:
   Eigen::MatrixXcd X_QAM;
   Eigen::MatrixXcd z;
   std::vector<std::vector<Num>> GrayCodeGrid;
-  std::vector<Num> GrayCodeVector;
 };
 
 #endif // SYSTEM_H

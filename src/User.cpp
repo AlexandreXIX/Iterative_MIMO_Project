@@ -7,10 +7,10 @@ User::User(const Num &T, const Num &M) : T(T), Data(T) {
   std::random_device rd;  // a seed source for the random number engine
   std::mt19937 gen(rd()); // mersenne_twister_engine seeded with rd()
   std::uniform_int_distribution<> distrib(1, M);
-  // Now for each value in the data stream, assign some random value between 1
-  // and dim (dim = M in M-QAM)
+  // Now for each value in the data stream, assign some random value between 0
+  // and dim - 1 (dim = M in M-QAM)
   for (Num &sample : Data) {
-    sample = distrib(gen);
+    sample = distrib(gen) - 1;
   }
 }
 

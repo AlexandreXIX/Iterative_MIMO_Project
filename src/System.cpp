@@ -7,10 +7,15 @@
 typedef int Num;
 
 System::System(const Num &N_t, const Num &N_r, const Num &T, const Num &M)
-    : N_t(N_t), N_r(N_r), T(T), M(M), N(std::sqrt(M)), H(N_r, N_t), X_int(N_t, T), X_QAM(N_t, T), z(N_r, T), GrayCodeGrid(N, std::vector<Num>(N)), GrayCodeVector(M) {
+    : N_t(N_t), N_r(N_r), T(T), M(M), N(std::sqrt(M)), H(N_r, N_t), X_int(N_t, T), X_QAM(N_t, T), z(N_r, T), GrayCodeGrid(N, std::vector<Num>(N)) {
   // First, obvious error checks
   if (N * N != M) {
-    throw std::invalid_argument("M must be a perfect square (e.g., 4, 16, 64, etc.).");
+    throw std::invalid_argument("M must be a perfect square.");
+  }
+  // Currently this code only works with square QAM, so M must be a perfect power of 2
+  int intTest = std::log2(M); // If log2(M) converted to int is not perfect, then not a power of 2
+  if (pow(2,intTest) != M) {
+    throw std::invalid_argument("M is not a power of 2.");
   }
   // Now, construct
   Users.reserve(N_t);
@@ -26,12 +31,12 @@ System::System(const Num &N_t, const Num &N_r, const Num &T, const Num &M)
   std::cout << "Here is the matrix H:\n" << H << std::endl;
   std::cout << "Here is the matrix X in int:\n" << X_int << std::endl;
   std::cout << "Here is the Gray-code:\n";
-  for (int i = 0; i < M; i++) {
-    std::bitset<4> myBits(GrayCodeVector[i]);
-    std::cout << GrayCodeVector[i] << " ";
-    std::cout << myBits << " ";
+  for (int i = 0; i < N; i++) {
+    for (int j = 0; j < N; j++) {
+      std::cout << GrayCodeGrid[i][j] << " ";
+    }
+    std::cout << std::endl;
   }
-  std::cout << std::endl;
   std::cout << "Here is the matrix X in QAM:\n" << X_QAM << std::endl;
   std::cout << "Here is the matrix z:\n" << z << std::endl;
   std::cout << "Here is the matrix Y:\n" << (H * X_QAM) + z << std::endl;
@@ -93,13 +98,6 @@ void System::GenerateGrayCode() {
     // Right to left (snake pattern)
     else {for (int j = N - 1; j >= 0; j--) {GrayCodeGrid[i][j] = tmpVector[index++];} }
   }
-  // Now set it as vector
-  index = 0;
-  for (int row = 0; row < N; row++) {
-    for (int col = 0; col < N; col++) {
-      GrayCodeVector[index++] = GrayCodeGrid[row][col];
-    }
-  }
 }
 
 // Helper function
@@ -107,17 +105,27 @@ void System::GenerateGrayCode() {
 std::complex<double> System::IntToQAM(Num int_value) {
   // TODO - fix this, completely wrong
   // Find max magnitude (same for real or img)
-  int max_mag = (N-1)/2;
-  // First, imaginary, left to right, -max to max, +2 at each step
-  int row = int_value / N;
-  int col = int_value % N;
-  // Map using Gray code
-  const int I = GrayCodeVector[col];
-  const int Q = GrayCodeVector[row];
+  int max_mag = (N-1);
+  // Find the integer in the matrix
+  // TODO - find a more optimized way to do this
+  int row = -1, col = -1;
+  for (int i = 0; i < N; i++) {
+    // This is one of the reasons only perfect square QAM possible
+    for (int j = 0; j < N; j++) {
+      if (GrayCodeGrid[i][j] == int_value) {
+        row = i;
+        col = j;
+        break;
+      }
+    }
+  }
+  if (row == -1 || col == -1) {throw std::invalid_argument("QAM encoding error.");}
   // Convert to complex
-  const double x = 2.0 * I - (N - 1);
-  const double y = -(2.0 * Q - (N - 1));
-  return {x, y};
+  // Use double because eventually need to modulate power
+  const double real = -max_mag + (2*col);
+  const double img = -max_mag + (2*row);
+  // Real goes - to + left to right, but img + to -, so flip
+  return {real, -img};
 }
 
 
@@ -129,7 +137,8 @@ void System::GenerateXQAM() {
   // Calculate every value
   for (int R = 0; R < N_t; R++) {
     for (int C = 0; C < T; C++) {
-      X_QAM(R, R) = IntToQAM(X_int(R,C)) / normFactor;
+      // TODO - use normFactor
+      X_QAM(R, C) = IntToQAM(X_int(R,C));
     }
   }
 }

@@ -10,15 +10,15 @@ using namespace std;
 bool testUsers() {
   bool testResult = true;
   // Run the test on a large sample of time slots and QAM constellation values
-  for (Num t = 1; t <= 100; ++t) {
-    for (Num m = 1; m <= 2048; m = m * 2) {
+  for (Num t = 2; t <= 100; ++t) {
+    for (Num m = 4; m <= 2048; m = m * 4) {
       User const User1(t, m);
 
       // Test 1:
       // Each user will contain T data points, all between 1 and M
       std::vector<Num> myData = User1.copyData();
       for (Num const &sample : myData) {
-        if (sample < 1 || sample > m) {
+        if (sample < 0 || sample > m - 1) {
           testResult = false; // for debugging, can add a breakpoint here
         }
       }
@@ -44,16 +44,17 @@ bool testUsers() {
       // accuracy
       constexpr double errorCount = 1;
       double const expectedAccuracy = (t - errorCount) / t;
-      myData[0] = 0;
+      myData[0] = m;
       if (User1.verify(myData) != expectedAccuracy) {
+        double getDataTmp = User1.verify(myData);
         testResult = false;
       }
 
       // Test 4:
       // Changes to the copy of the User's data does not change the User
-      // (properly handles const) (technically redundant) myData[0] = 0
+      // (properly handles const) (technically redundant) myData[0] = m
       // determined above
-      if (User1.copyData()[0] == 0) {
+      if (User1.copyData()[0] == m) {
         testResult = false;
       }
 
@@ -100,6 +101,6 @@ string testResult(const bool &testResult) {
 int main() {
   cout << "User Test: " << testResult(testUsers()) << endl;
   // TODO - add more comprehensive tests
-  System testSystem(2, 2, 5, 16);
+  System testSystem(3, 2, 10, 256);
   return 0;
 }
