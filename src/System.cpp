@@ -1,20 +1,24 @@
 // @author Alexandre P.J. Dixneuf
 
 #include "System.h"
-#include <complex>
 #include <bitset>
+#include <complex>
 
 typedef int Num;
 
 System::System(const Num &N_t, const Num &N_r, const Num &T, const Num &M)
-    : N_t(N_t), N_r(N_r), T(T), M(M), N(std::sqrt(M)), H(N_r, N_t), X_int(N_t, T), X_QAM(N_t, T), z(N_r, T), GrayCodeGrid(N, std::vector<Num>(N)) {
+    : N_t(N_t), N_r(N_r), T(T), M(M), N(std::sqrt(M)), H(N_r, N_t),
+      X_int(N_t, T), X_QAM(N_t, T), z(N_r, T),
+      GrayCodeGrid(N, std::vector<Num>(N)) {
   // First, obvious error checks
   if (N * N != M) {
     throw std::invalid_argument("M must be a perfect square.");
   }
-  // Currently this code only works with square QAM, so M must be a perfect power of 2
-  int intTest = std::log2(M); // If log2(M) converted to int is not perfect, then not a power of 2
-  if (pow(2,intTest) != M) {
+  // Currently this code only works with square QAM, so M must be a perfect
+  // power of 2
+  int intTest = std::log2(
+      M); // If log2(M) converted to int is not perfect, then not a power of 2
+  if (pow(2, intTest) != M) {
     throw std::invalid_argument("M is not a power of 2.");
   }
   // Now, construct
@@ -45,10 +49,12 @@ System::System(const Num &N_t, const Num &N_r, const Num &T, const Num &M)
   double powerTracker = 0;
   for (Num i = 0; i < N_t; i++) {
     for (Num j = 0; j < T; j++) {
-      powerTracker = powerTracker + pow(X_QAM(i,j).real(),2) + pow(X_QAM(i,j).imag(),2);
+      powerTracker = powerTracker + pow(X_QAM(i, j).real(), 2) +
+                     pow(X_QAM(i, j).imag(), 2);
     }
   }
-  std::cout << "Here is the average X power:\n" << powerTracker/(N_t*T) << std::endl;
+  std::cout << "Here is the average X power:\n"
+            << powerTracker / (N_t * T) << std::endl;
 }
 
 // Generates the random channel conditions
@@ -103,9 +109,17 @@ void System::GenerateGrayCode() {
   int index = 0;
   for (int i = 0; i < N; i++) {
     // Left to right
-    if (i % 2 == 0) {for (int j = 0; j < N; j++) {GrayCodeGrid[i][j] = tmpVector[index++];} }
+    if (i % 2 == 0) {
+      for (int j = 0; j < N; j++) {
+        GrayCodeGrid[i][j] = tmpVector[index++];
+      }
+    }
     // Right to left (snake pattern)
-    else {for (int j = N - 1; j >= 0; j--) {GrayCodeGrid[i][j] = tmpVector[index++];} }
+    else {
+      for (int j = N - 1; j >= 0; j--) {
+        GrayCodeGrid[i][j] = tmpVector[index++];
+      }
+    }
   }
 }
 
@@ -114,7 +128,7 @@ void System::GenerateGrayCode() {
 std::complex<double> System::IntToQAM(Num int_value) {
   // TODO - fix this, completely wrong
   // Find max magnitude (same for real or img)
-  int max_mag = (N-1);
+  int max_mag = (N - 1);
   // Find the integer in the matrix
   // TODO - find a more optimized way to do this
   int row = -1, col = -1;
@@ -128,15 +142,16 @@ std::complex<double> System::IntToQAM(Num int_value) {
       }
     }
   }
-  if (row == -1 || col == -1) {throw std::invalid_argument("QAM encoding error.");}
+  if (row == -1 || col == -1) {
+    throw std::invalid_argument("QAM encoding error.");
+  }
   // Convert to complex
   // Use double because eventually need to modulate power
-  const double real = -max_mag + (2*col);
-  const double img = -max_mag + (2*row);
+  const double real = -max_mag + (2 * col);
+  const double img = -max_mag + (2 * row);
   // Real goes - to + left to right, but img + to -, so flip
   return {real, -img};
 }
-
 
 // Takes X in integers and converts to QAM (gray-code)
 void System::GenerateXQAM() {
@@ -145,8 +160,7 @@ void System::GenerateXQAM() {
   // Calculate every value
   for (int R = 0; R < N_t; R++) {
     for (int C = 0; C < T; C++) {
-      X_QAM(R, C) = IntToQAM(X_int(R,C)) / normFactor;
+      X_QAM(R, C) = IntToQAM(X_int(R, C)) / normFactor;
     }
   }
 }
-
