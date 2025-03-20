@@ -15,16 +15,13 @@
  *          It is important to note that this class only stores the constellation. Re-encoding and decoding using the
  *          same constellation is possible by keeping the same instance of this class.
  *          Note that the container also stores N = sqrt(M) to avoid recalculation.
- * @param This class needs 1 parameter: M
- *        M: Since the constellation must be standalone to the signal to be reusable, needs to store M. This will also
- *        serve to ensure no bugs from a signal expecting a higher level constellation. Will throw an error if the
- *        opposite is true, but will still output a result.
+ * @param ProblemParameters object
  */
 
 class QAMConstellation {
 public:
     // Initializer + Constructor
-    QAMConstellation(const int M);
+    QAMConstellation(const ProblemParameters* params);
 
     // Copy Constructor (banned)
     QAMConstellation(const QAMConstellation &rhs) = delete;
@@ -42,12 +39,21 @@ public:
     void QAMDecoding(MySignal &mySignal);
 
     // Draws the constellation to assist testing and debugging
-    void DrawConstellation();
+    void DrawConstellation() const;
+
+    // Outputs the problem parameters pointer to verify
+    const ProblemParameters* GetParameters() const;
+
+    // Checks if a given pointer is the same pointer as this object's parameters (output True means same)
+    bool SameParameters(const ProblemParameters* otherPointer) const;
 
 private:
-    int M;
-    int N;
+    // Helper function
+    // Finds the corresponding QAM symbol for a given message (only takes real)
+    [[nodiscard]] std::pair<int,int> FindQAM(const double &message) const;
+
     std::vector<std::vector<int>> Constellation;
+    const ProblemParameters* params;
 };
 
 

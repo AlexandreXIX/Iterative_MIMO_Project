@@ -20,15 +20,15 @@ public:
     // Destructor (default)
     ~ProblemParameters() = default;
 
-    int GetNt() const;
+    [[nodiscard]] int GetNt() const;
 
-    int GetNr() const;
+    [[nodiscard]] int GetNr() const;
 
-    int GetT() const;
+    [[nodiscard]] int GetT() const;
 
-    int GetM() const;
+    [[nodiscard]] int GetM() const;
 
-    int GetN() const;
+    [[nodiscard]] int GetN() const;
 
 private:
     int N_t;

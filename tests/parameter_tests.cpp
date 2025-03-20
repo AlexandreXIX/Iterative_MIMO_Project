@@ -26,7 +26,7 @@ bool Test3() {
 }
 
 int main() {
-    std::cout << "Signal Tests: " << std::endl;
+    std::cout << "Parameter Tests: " << std::endl;
     std::cout << "Test 1: " << OutputTestResults(Test1()) << std::endl;
     std::cout << "Test 2: " << OutputTestResults(Test2()) << std::endl;
     std::cout << "Test 3: " << OutputTestResults(Test3()) << std::endl;

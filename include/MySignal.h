@@ -4,21 +4,15 @@
 #define MYSIGNAL_H
 
 #include <Eigen/Dense>
-#include <complex>
-#include <variant>
 #include <random>
-#include <iostream>
+#include "ProblemParameters.h"
 
 /**
  * @class MySignal
  * @brief This class serves as a container for a signal.
  * @details To avoid asking a user to understand the Eigen class and how to handle matrices, it is better to create this class. This class should generate random signals and handle the matrix automatically (again, simplifies for user.) All other classes for this project will simply take in the Object rather than each handle random matrices and run exception tests at each step.
  *          NOTE: THE CLASS CANNOT BE CALLED "Signal", because that is in the standard library and will destroy everything.
- * @param This container needs four values, N_t, N_r, T, and M
- *        N_t: The number of transceiver antennas
- *        N_r: The number of receiving antennas
- *        T: The number of transmissions / the timespan of signal transmissions
- *        M: The modulation level. Wished it wasn't necessary for this container, but if 256-QAM, message can't be >256
+ * @param ProblemParameters object
  */
 
 // Defines a matrix as being dynamically sized with complex double values
@@ -27,7 +21,7 @@ using MatrixType = Eigen::Matrix<std::complex<double>, Eigen::Dynamic, Eigen::Dy
 class MySignal {
 public:
     // Initializer + Constructor
-    MySignal(const int &N_t, const int &N_r, const int &T, const int &M);
+    explicit MySignal(const ProblemParameters* params);
 
     // Copy Constructor (Deep-Copy) can be default, Eigen does deep copy by default
     MySignal(const MySignal &rhs) = default;
@@ -53,12 +47,15 @@ public:
     // Outputs a pointer to the stored matrix
     MatrixType& GetData();
 
+    // Outputs the problem parameters pointer to verify
+    const ProblemParameters* GetParameters() const;
+
+    // Checks if a given pointer is the same pointer as this object's parameters (output True means same)
+    bool SameParameters(const ProblemParameters* otherPointer) const;
+
 private:
-    int N_t;
-    int N_r;
-    int T;
-    int M;
     MatrixType data;
+    const ProblemParameters* params;
 };
 
 #endif //MYSIGNAL_H

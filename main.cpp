@@ -1,8 +1,9 @@
 // @author Alexandre P.J. Dixneuf
-#include "include/System.h"
-// Only need #include "include/User.h" if directly call User class
 #include <iostream>
 #include <vector>
+#include <random>
+
+#include "include/System.h"
 
 typedef double numType;
 using namespace std;
