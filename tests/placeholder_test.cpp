@@ -1,5 +1,5 @@
 // @author Alexandre P.J. Dixneuf
-#include "src/placeholder.cpp"
+#include "../src/placeholder.cpp"
 
 int main() {
   // Quick testing

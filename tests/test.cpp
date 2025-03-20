@@ -1,6 +1,6 @@
 // @author Alexandre P.J. Dixneuf
-#include "System.h"
-#include "User.h"
+#include "../include/System.h"
+#include "../include/User.h"
 
 typedef int Num;
 using namespace std;
