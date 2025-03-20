@@ -1,9 +1,9 @@
 // @author Alexandre P.J. Dixneuf
 
-#include "Signal.h"
+#include "MySignal.h"
 
 // Initializer + Constructor
-Signal::Signal(const int &N_t, const int &N_r, const int &T, const int &M) : N_t(N_t), N_r(N_r), T(T), M(M), data(N_t, T) {
+MySignal::MySignal(const int &N_t, const int &N_r, const int &T, const int &M) : N_t(N_t), N_r(N_r), T(T), M(M), data(N_t, T) {
     // Verify that M is acceptable
     // Currently, works only on perfect squares that are powers of 2 (4, 16, 64, 256, etc.)
     int N = static_cast<int>(sqrt(M));
@@ -32,12 +32,12 @@ Signal::Signal(const int &N_t, const int &N_r, const int &T, const int &M) : N_t
 }
 
 // This function allows a new matrix of data to replace currently stored data. This is how we update the signal after data modulation / encoding / decoding / etc.
-void Signal::AlterData(const MatrixType &newMatrix) {
+void MySignal::AlterData(const MatrixType &newMatrix) {
     data = newMatrix;
 }
 
 // This functions compare they current signal to another signal to return how accurately they match
-double Signal::VerifyAccuracy(const MatrixType &variant) {
+double MySignal::VerifyAccuracy(const MatrixType &variant) {
     // If matrix sizes incompatible, throw exception
     if ((data.rows() != variant.rows()) || (data.cols() != variant.cols())) {throw std::invalid_argument("Comparing matrices of different sizes.");}
     // If we assume more often accurate than not, minimally better to enter if statement only when errors occur
@@ -51,12 +51,12 @@ double Signal::VerifyAccuracy(const MatrixType &variant) {
 }
 
 // This function runs the verification check, but on Signal object, so must first extract data
-double Signal::VerifyAccuracy(const Signal &variant) {
+double MySignal::VerifyAccuracy(const MySignal &variant) {
     return VerifyAccuracy(variant.data);
 }
 
 // Outputs a new matrix that is a deep copy of the stored data
-MatrixType Signal::CopyData() { return data; }
+MatrixType MySignal::CopyData() { return data; }
 
 // Outputs a pointer to the stored matrix
-MatrixType& Signal::GetData() { return data; }
+MatrixType& MySignal::GetData() { return data; }

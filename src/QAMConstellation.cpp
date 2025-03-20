@@ -43,12 +43,12 @@ QAMConstellation::QAMConstellation(const int M) : M(M), N(static_cast<int>(sqrt(
 }
 
 // Converts Signal int to complex
-void QAMConstellation::QAMEncoding(Signal &mySignal) {
+void QAMConstellation::QAMEncoding(MySignal &mySignal) {
     // TODO - complete
 }
 
 // Converts Signal complex to int
-void QAMConstellation::QAMDecoding(Signal &mySignal) {
+void QAMConstellation::QAMDecoding(MySignal &mySignal) {
     // TODO - complete
 }
 

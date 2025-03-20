@@ -3,7 +3,7 @@
 #ifndef QAMCONSTELLATION_H
 #define QAMCONSTELLATION_H
 
-#include "Signal.h"
+#include "MySignal.h"
 
 /**
  * @class QAMConstellation
@@ -36,10 +36,10 @@ public:
     ~QAMConstellation() = default;
 
     // Converts Signal int to complex
-    void QAMEncoding(Signal &mySignal);
+    void QAMEncoding(MySignal &mySignal);
 
     // Converts Signal complex to int
-    void QAMDecoding(Signal &mySignal);
+    void QAMDecoding(MySignal &mySignal);
 
     // Draws the constellation to assist testing and debugging
     void DrawConstellation();

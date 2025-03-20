@@ -1,6 +1,8 @@
 // @author Alexandre P.J. Dixneuf
 
-#include "MySignal.h"
+#include <string>
+#include <iostream>
+#include "ProblemParameters.h"
 
 // Helper function to print out test results
 std::string OutputTestResults(const bool testResult) {

@@ -3,6 +3,7 @@
 #include <cstdlib>
 
 int main() {
-    system("Signal_Tests");
-    system("QAMConstellation_Tests");
+    system("Parameter_tests");
+    system("Signal_tests");
+    system("QAMConstellation_tests");
 }

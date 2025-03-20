@@ -1,7 +1,7 @@
 // @author Alexandre P.J. Dixneuf
 
-#ifndef SIGNAL_H
-#define SIGNAL_H
+#ifndef MYSIGNAL_H
+#define MYSIGNAL_H
 
 #include <Eigen/Dense>
 #include <complex>
@@ -10,8 +10,10 @@
 #include <iostream>
 
 /**
- * @class Signal
- * @brief This class serves as a container for a Signal. To avoid asking a user to understand the Eigen class and how to handle matrices, it is better to create this class. This class should generate random signals and handle the matrix automatically (again, simplifies for user.) All other classes for this project will simply take in the Object rather than each handle random matrices and run exception tests at each step.
+ * @class MySignal
+ * @brief This class serves as a container for a signal.
+ * @details To avoid asking a user to understand the Eigen class and how to handle matrices, it is better to create this class. This class should generate random signals and handle the matrix automatically (again, simplifies for user.) All other classes for this project will simply take in the Object rather than each handle random matrices and run exception tests at each step.
+ *          NOTE: THE CLASS CANNOT BE CALLED "Signal", because that is in the standard library and will destroy everything.
  * @param This container needs four values, N_t, N_r, T, and M
  *        N_t: The number of transceiver antennas
  *        N_r: The number of receiving antennas
@@ -22,19 +24,19 @@
 // Defines a matrix as being dynamically sized with complex double values
 using MatrixType = Eigen::Matrix<std::complex<double>, Eigen::Dynamic, Eigen::Dynamic>;
 
-class Signal {
+class MySignal {
 public:
     // Initializer + Constructor
-    Signal(const int &N_t, const int &N_r, const int &T, const int &M);
+    MySignal(const int &N_t, const int &N_r, const int &T, const int &M);
 
     // Copy Constructor (Deep-Copy) can be default, Eigen does deep copy by default
-    Signal(const Signal &rhs) = default;
+    MySignal(const MySignal &rhs) = default;
 
     // Assignment Operator (Deep-Copy) can be default, Eigen does deep copy by default
-    Signal &operator=(const Signal &rhs) = default;
+    MySignal &operator=(const MySignal &rhs) = default;
 
     // Destructor (default)
-    ~Signal() = default;
+    ~MySignal() = default;
 
     // This function allows a new matrix of data to replace currently stored data. This is how we update the signal after data modulation / encoding / decoding / etc.
     void AlterData(const MatrixType &newMatrix);
@@ -43,7 +45,7 @@ public:
     double VerifyAccuracy(const MatrixType &variant);
 
     // This function runs the verification check, but on Signal object, so must first extract data
-    double VerifyAccuracy(const Signal &variant);
+    double VerifyAccuracy(const MySignal &variant);
 
     // Outputs a new matrix that is a deep copy of the stored data
     MatrixType CopyData();
@@ -59,4 +61,4 @@ private:
     MatrixType data;
 };
 
-#endif //SIGNAL_H
+#endif //MYSIGNAL_H
