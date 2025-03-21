@@ -66,8 +66,26 @@ bool Test2() {
   return true;
 }
 
+bool Test3() {
+  // Verify that ProblemParameter copies the value of integers, not the reference
+  // Also serves as a stress test for larger values
+  int N_t = 100000, N_r = 100000, T = 100000, M = 16384;
+  // Not const just in case in alters test
+  ProblemParameters p(N_t, N_r, T, M);
+  ++N_t;
+  ++N_r;
+  ++T;
+  ++M;
+  if (p.GetNt() == N_t) {return false;}
+  if (p.GetNr() == N_r) {return false;}
+  if (p.GetT() == T) {return false;}
+  if (p.GetM() == M) {return false;}
+  return true;
+}
+
 int main() {
   std::cout << "Parameter Tests: " << std::endl;
   std::cout << "Test 1: " << OutputTestResults(Test1()) << std::endl;
   std::cout << "Test 2: " << OutputTestResults(Test2()) << std::endl;
+  std::cout << "Test 3: " << OutputTestResults(Test2()) << std::endl;
 }
