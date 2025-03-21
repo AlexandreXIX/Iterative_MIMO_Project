@@ -57,7 +57,8 @@ public:
   MatrixType CopyData();
 
   // Outputs a pointer to the stored matrix
-  MatrixType &GetData();
+  // This works by using: (*myMatrix) = ...; or (*myMatrix)(i,j) = ...;
+  MatrixType *GetData();
 
   // Outputs the problem parameters pointer to verify
   const ProblemParameters *GetParameters() const;

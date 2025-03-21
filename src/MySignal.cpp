@@ -53,7 +53,7 @@ double MySignal::VerifyAccuracy(const MySignal &variant) {
 MatrixType MySignal::CopyData() { return data; }
 
 // Outputs a pointer to the stored matrix
-MatrixType &MySignal::GetData() { return data; }
+MatrixType *MySignal::GetData() { return &data; }
 
 // Outputs the problem parameters pointer to verify
 const ProblemParameters *MySignal::GetParameters() const { return params; }
