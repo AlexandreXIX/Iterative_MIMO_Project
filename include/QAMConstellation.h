@@ -8,11 +8,11 @@
 /**
  * @class QAMConstellation
  * @brief This class serves to handle the tasks involving the QAM Constellation.
- * @details There are three main tasks this class should handle:
- *          1) Generate a grid representing a gray-code M-QAM constellation.
- *          2) Takes a Signal object with integer values and encodes them into
- * QAM using the generated constellation. 3) Takes an encoded Signal object and
- * decodes them using the constellation back into integer values. It is
+ * @details There are three main tasks this class should handle: 1) Generate a
+ * map representing a gray-code M-QAM constellation (map is int->(real,img)
+ * coordinate); 2) Takes a Signal object with integer values and encodes them
+ * into QAM using the generated constellation; 3) Takes an encoded Signal object
+ * and decodes them using the constellation back into integer values. It is
  * important to note that this class only stores the constellation. Re-encoding
  * and decoding using the same constellation is possible by keeping the same
  * instance of this class. Note that the container also stores N = sqrt(M) to
