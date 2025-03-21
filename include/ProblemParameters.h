@@ -12,7 +12,7 @@
  * parameters. This ensures that the exception handling and the problem
  * verification only has to happen once. In addition, it simplifies ensuring
  * that every part of the simulation agrees on the problem.
- * @param This container needs four values, N_t, N_r, T, and M
+ * @param Four values, N_t, N_r, T, and M
  *        N_t: The number of transceiver antennas
  *        N_r: The number of receiving antennas
  *        T: The number of transmissions / the timespan of signal transmissions
