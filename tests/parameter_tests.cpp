@@ -13,24 +13,31 @@ std::string OutputTestResults(const bool testResult) {
 }
 
 bool Test1() {
-  // for a range of acceptable parameters, ProblemParameters properly stores and returns the values
+  // for a range of acceptable parameters, ProblemParameters properly stores and
+  // returns the values
   try {
     for (int N_t = 1; N_t <= 1001; N_t = N_t + 100) {
       for (int N_r = 1; N_r <= 1001; N_r = N_r + 100) {
         for (int T = 1; T <= 1001; T = T + 100) {
           for (int M = 4; M <= 4096; M = M * 4) {
-            if (ProblemParameters p(N_t, N_r, T, M); (p.GetNt() != N_t) || (p.GetNr() != N_r) || (p.GetT() != T) || (p.GetM() != M) || (p.GetN() != std::sqrt(M))) {return false;}
+            if (ProblemParameters p(N_t, N_r, T, M);
+                (p.GetNt() != N_t) || (p.GetNr() != N_r) || (p.GetT() != T) ||
+                (p.GetM() != M) || (p.GetN() != std::sqrt(M))) {
+              return false;
+            }
           }
         }
       }
     }
+  } catch (std::invalid_argument &) {
+    return false;
   }
-  catch (std::invalid_argument&) {return false;}
   return true;
 }
 
 bool Test2() {
-  // If all but one variable is acceptable, ProblemParameters still throws an error
+  // If all but one variable is acceptable, ProblemParameters still throws an
+  // error
   for (int N_t = 1; N_t <= 100; N_t = N_t + 10) {
     for (int N_r = 1; N_r <= 100; N_r = N_r + 10) {
       for (int T = 1; T <= 100; T = T + 10) {
@@ -38,24 +45,22 @@ bool Test2() {
           try {
             ProblemParameters a(0, N_r, T, M);
             return false;
-          }
-          catch (std::invalid_argument&) {
+          } catch (std::invalid_argument &) {
             try {
               int N_rTest = 0;
               ProblemParameters b(N_t, 0, T, M);
               return false;
-            }
-            catch (std::invalid_argument&) {
+            } catch (std::invalid_argument &) {
               try {
                 ProblemParameters c(N_t, N_r, 0, M);
                 return false;
-              }
-              catch (std::invalid_argument&) {
+              } catch (std::invalid_argument &) {
                 try {
                   ProblemParameters d(N_t, N_r, T, 0);
                   return false;
+                } catch (std::invalid_argument &) {
+                  ;
                 }
-                catch (std::invalid_argument&) {;}
               }
             }
           }
@@ -67,8 +72,8 @@ bool Test2() {
 }
 
 bool Test3() {
-  // Verify that ProblemParameter copies the value of integers, not the reference
-  // Also serves as a stress test for larger values
+  // Verify that ProblemParameter copies the value of integers, not the
+  // reference Also serves as a stress test for larger values
   int N_t = 100000, N_r = 100000, T = 100000, M = 16384;
   // Not const just in case in alters test
   ProblemParameters p(N_t, N_r, T, M);
@@ -76,10 +81,18 @@ bool Test3() {
   ++N_r;
   ++T;
   ++M;
-  if (p.GetNt() == N_t) {return false;}
-  if (p.GetNr() == N_r) {return false;}
-  if (p.GetT() == T) {return false;}
-  if (p.GetM() == M) {return false;}
+  if (p.GetNt() == N_t) {
+    return false;
+  }
+  if (p.GetNr() == N_r) {
+    return false;
+  }
+  if (p.GetT() == T) {
+    return false;
+  }
+  if (p.GetM() == M) {
+    return false;
+  }
   return true;
 }
 
