@@ -1,7 +1,7 @@
 // @author Alexandre P.J. Dixneuf
 #include <iostream>
-#include <vector>
 #include <random>
+#include <vector>
 
 #include "include/System.h"
 
