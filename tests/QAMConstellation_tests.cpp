@@ -15,7 +15,7 @@ std::string OutputTestResults(const bool testResult) {
 // Automatic check would be time-consuming to code
 bool Test0() {
   // Easy test = 16, better test = 64
-  const int M = 64;
+  constexpr int M = 64;
   const ProblemParameters p(2, 2, 2, M);
   const QAMConstellation q(&p);
   std::string input;
