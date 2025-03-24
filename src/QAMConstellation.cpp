@@ -2,12 +2,11 @@
 
 #include "QAMConstellation.h"
 #include "../src/MySignal.cpp"
-#include <iostream>
 
 // Initializer + Constructor
 QAMConstellation::QAMConstellation(const ProblemParameters *params)
-    : Constellation(params->GetN(), std::vector<int>(params->GetN())), encodingMap(params->GetM()),
-      params(params) {
+    : Constellation(params->GetN(), std::vector<int>(params->GetN())),
+      encodingMap(params->GetM()), params(params) {
   // Get constants
   const int M = params->GetM();
   const int N = params->GetN();
@@ -45,7 +44,8 @@ QAMConstellation::QAMConstellation(const ProblemParameters *params)
     for (int j = 0; j < N; j++) {
       const double real = -max_mag + (2 * j);
       const double img = -max_mag + (2 * i);
-      encodingMap[Constellation[i][j]] = std::complex<double>(real, -img) / normFactor;
+      encodingMap[Constellation[i][j]] =
+          std::complex<double>(real, -img) / normFactor;
     }
   }
 }
@@ -69,17 +69,36 @@ void QAMConstellation::DrawConstellation() const {
   }
 }
 
+void QAMConstellation::DrawGrayCode() const {
+  const int N = params->GetN();
+  for (int i = 0; i < N; i++) {
+    for (int j = 0; j < N; j++) {
+      for (int bit = N - 1; bit >= 0; --bit) {
+        std::cout << ((Constellation[i][j] >> bit) & 1);
+      }
+      std::cout << " ";
+    }
+    std::cout << std::endl;
+  }
+}
+
 void QAMConstellation::DrawEncoder() const {
   // Remove the normalization to draw cleaner
   const double normFactor = sqrt((2.0 * (params->GetM() - 1)) / 3.0);
   for (int i = 0; i < params->GetN(); i++) {
     for (int j = 0; j < params->GetN(); j++) {
-      std::complex<double> toPrint = encodingMap.at(Constellation[i][j])*normFactor;
+      std::complex<double> toPrint =
+          encodingMap.at(Constellation[i][j]) * normFactor;
       std::cout << "(";
-      if (toPrint.real() > 0) {std::cout << "+"; }
+      if (toPrint.real() > 0) {
+        std::cout << "+";
+      }
       std::cout << toPrint.real();
-      if (toPrint.imag() > 0) {std::cout << " + " << toPrint.imag(); }
-      else {std::cout << " - " << -toPrint.imag(); }
+      if (toPrint.imag() > 0) {
+        std::cout << " + " << toPrint.imag();
+      } else {
+        std::cout << " - " << -toPrint.imag();
+      }
       std::cout << "i) ";
     }
     std::cout << std::endl;

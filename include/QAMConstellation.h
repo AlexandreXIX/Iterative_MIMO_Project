@@ -3,8 +3,9 @@
 #ifndef QAMCONSTELLATION_H
 #define QAMCONSTELLATION_H
 
-#include <unordered_map>
 #include "MySignal.h"
+#include <iostream>
+#include <unordered_map>
 
 /**
  * @class QAMConstellation
@@ -38,6 +39,9 @@ public:
 
   // Draws the constellation to assist testing and debugging
   void DrawConstellation() const;
+
+  // Draws the constellation in binary to verify gray-code
+  void DrawGrayCode() const;
 
   // Print the complex values for the map for testing
   void DrawEncoder() const;
