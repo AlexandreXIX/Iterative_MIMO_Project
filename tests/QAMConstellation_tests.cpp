@@ -60,8 +60,12 @@ bool Test3() {
 
 int main() {
   std::cout << "QAM Constellation Tests: " << std::endl;
-  std::cout << "Begin Manual Testing: " << std::endl;
-  std::cout << OutputTestResults(Test0()) << " Manual Testing" << std::endl;
+  std::string input;
+  std::cout << "Would you like to perform manual testing? (Y/[other]):";
+  std::cin >> input;
+  if (input == "Y" || input == "y") {
+    std::cout << OutputTestResults(Test0()) << " Manual Testing" << std::endl;
+  }
   std::cout << "Test 1: " << OutputTestResults(Test1()) << std::endl;
   std::cout << "Test 2: " << OutputTestResults(Test2()) << std::endl;
   std::cout << "Test 3: " << OutputTestResults(Test3()) << std::endl;
