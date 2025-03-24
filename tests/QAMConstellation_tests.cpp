@@ -27,6 +27,10 @@ bool Test3() {
 }
 
 int main() {
+  const ProblemParameters p(2, 2, 2, 16);
+  QAMConstellation q(&p);
+  q.DrawConstellation();
+  q.DrawEncoder();
   std::cout << "QAM Constellation Tests: " << std::endl;
   std::cout << "Test 1: " << OutputTestResults(Test1()) << std::endl;
   std::cout << "Test 2: " << OutputTestResults(Test2()) << std::endl;

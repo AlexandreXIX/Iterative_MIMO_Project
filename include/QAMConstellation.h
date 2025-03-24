@@ -3,20 +3,16 @@
 #ifndef QAMCONSTELLATION_H
 #define QAMCONSTELLATION_H
 
+#include <unordered_map>
 #include "MySignal.h"
 
 /**
  * @class QAMConstellation
  * @brief This class serves to handle the tasks involving the QAM Constellation.
  * @details There are three main tasks this class should handle: 1) Generate a
- * map representing a gray-code M-QAM constellation (map is int->(real,img)
- * coordinate); 2) Takes a Signal object with integer values and encodes them
- * into QAM using the generated constellation; 3) Takes an encoded Signal object
- * and decodes them using the constellation back into integer values. It is
- * important to note that this class only stores the constellation. Re-encoding
- * and decoding using the same constellation is possible by keeping the same
- * instance of this class. Note that the container also stores N = sqrt(M) to
- * avoid recalculation.
+ * map representing a gray-code M-QAM constellation
+ *          2) Use the map to encode an integer signal into a complex signal
+ *          3) TODO - find an optimized way to rever this process
  * @param ProblemParameters object
  */
 
@@ -43,6 +39,9 @@ public:
   // Draws the constellation to assist testing and debugging
   void DrawConstellation() const;
 
+  // Print the complex values for the map for testing
+  void DrawEncoder() const;
+
   // Outputs the problem parameters pointer to verify
   const ProblemParameters *GetParameters() const;
 
@@ -51,11 +50,8 @@ public:
   bool SameParameters(const ProblemParameters *otherPointer) const;
 
 private:
-  // Helper function
-  // Finds the corresponding QAM symbol for a given message (only takes real)
-  [[nodiscard]] std::pair<int, int> FindQAM(const double &message) const;
-
   std::vector<std::vector<int>> Constellation;
+  std::unordered_map<int, std::complex<double>> encodingMap;
   const ProblemParameters *params;
 };
 
