@@ -34,6 +34,9 @@ Channel::Channel(const ProblemParameters *params)
 
 // Take in a signal, and propagate it according to the channel conditions
 void Channel::ChannelPropagation(MySignal &transmitted) const {
+  if (CompatibilityTest(transmitted.GetParameters()) == false) {
+    throw std::invalid_argument("Channel and Signal parameters don't match.");
+  }
   transmitted.AlterData((H * transmitted.CopyData()) + Z);
 }
 

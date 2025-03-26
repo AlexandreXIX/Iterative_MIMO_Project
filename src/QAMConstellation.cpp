@@ -52,7 +52,13 @@ QAMConstellation::QAMConstellation(const ProblemParameters *params)
 
 // Converts Signal int to complex
 void QAMConstellation::QAMEncoding(MySignal &mySignal) {
-  // TODO - complete
+  MatrixType X = mySignal.CopyData();
+  for (int i = 0; i < X.rows(); ++i) {
+    for (int j = 0; j < X.cols(); ++j) {
+      X(i, j) = encodingMap[X(i, j).real()];
+    }
+  }
+  mySignal.AlterData(X);
 }
 
 // Converts Signal complex to int
