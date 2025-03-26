@@ -19,17 +19,23 @@ public:
   // Initializer + Constructor
   Channel(const ProblemParameters *params);
 
-  // Copy Constructor (banned)
+  // Copy Constructor
   Channel(const Channel &rhs) = delete;
 
-  // Assignment Operator (banned)
+  // Assignment Operator
   Channel &operator=(const Channel &rhs) = delete;
 
   // Deconstructor (delete each user)
   ~Channel() = default;
 
-  // Take in a signal, and modulate it according to the channel conditions
-  void ChannelModulation(MySignal &transmitted) const;
+  // Take in a signal, and propagate it according to the channel conditions
+  void ChannelPropagation(MySignal &transmitted) const;
+
+  // Output the fading condition matrix H
+  MatrixType GetH() const;
+
+  // Output the noise matrix Z
+  MatrixType GetZ() const;
 
   // Outputs the problem parameters pointer to verify
   const ProblemParameters *GetParameters() const;
@@ -39,6 +45,12 @@ public:
   bool SameParameters(const ProblemParameters *otherPointer) const;
 
 private:
+  // Verify that the parameter is compatible
+  // Different than SameParameters() because a different object with same
+  // elements still results in True This allows same channel for different M for
+  // testing
+  bool CompatibilityTest(const ProblemParameters *otherPointer) const;
+
   MatrixType H;
   MatrixType Z;
   const ProblemParameters *params;

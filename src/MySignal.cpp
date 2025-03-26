@@ -19,7 +19,7 @@ MySignal::MySignal(const ProblemParameters *params)
 }
 
 // This function allows a new matrix of data to replace currently stored data.
-// This is how we update the signal after data modulation / encoding / decoding
+// This is how we update the signal after channel propagation / encoding / decoding
 // / etc.
 void MySignal::AlterData(const MatrixType &newMatrix) { data = newMatrix; }
 

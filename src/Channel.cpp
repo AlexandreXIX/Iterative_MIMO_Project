@@ -33,9 +33,15 @@ Channel::Channel(const ProblemParameters *params)
 }
 
 // Take in a signal, and modulate it according to the channel conditions
-void Channel::ChannelModulation(MySignal &transmitted) const {
+void Channel::ChannelPropagation(MySignal &transmitted) const {
   transmitted.AlterData((H * transmitted.CopyData()) + Z);
 }
+
+// Output the fading condition matrix H
+MatrixType Channel::GetH() const { return H; }
+
+// Output the noise matrix Z
+MatrixType Channel::GetZ() const { return Z; }
 
 // Outputs the problem parameters pointer to verify
 const ProblemParameters *Channel::GetParameters() const { return params; };
@@ -44,4 +50,20 @@ const ProblemParameters *Channel::GetParameters() const { return params; };
 // (output True means same)
 bool Channel::SameParameters(const ProblemParameters *otherPointer) const {
   return params == otherPointer;
+};
+
+// Verify that the parameter is compatible
+// Different than SameParameters() because a different object with same elements
+// still results in True This allows same channel for different M for testing
+bool Channel::CompatibilityTest(const ProblemParameters *otherPointer) const {
+  // If the params are same, no need to check
+  if (params == otherPointer) {
+    return true;
+  }
+  if (params->GetNr() == otherPointer->GetNr() &&
+      params->GetNt() == otherPointer->GetNt() &&
+      params->GetT() == otherPointer->GetT()) {
+    return true;
+  }
+  return false;
 };
