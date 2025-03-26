@@ -32,7 +32,7 @@ Channel::Channel(const ProblemParameters *params)
   }
 }
 
-// Take in a signal, and modulate it according to the channel conditions
+// Take in a signal, and propagate it according to the channel conditions
 void Channel::ChannelPropagation(MySignal &transmitted) const {
   transmitted.AlterData((H * transmitted.CopyData()) + Z);
 }

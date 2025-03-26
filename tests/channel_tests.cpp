@@ -12,7 +12,7 @@ std::string OutputTestResults(const bool testResult) {
   return "Failed";
 }
 
-// Test that two identical signals will be modulated in identical ways
+// Test that two identical signals will propagate in identical ways
 bool Test1() {
   // TODO - add tests
   return false;
