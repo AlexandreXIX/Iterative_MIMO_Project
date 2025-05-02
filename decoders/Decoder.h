@@ -16,8 +16,7 @@
 
 class Decoder {
 public:
-  virtual Eigen::MatrixXcd
-  decode(const Eigen::MatrixXcd &noisyData, const ProblemParameters myParams, const QAMConstellation myQAM) = 0; // Pure virtual function
+  virtual Eigen::MatrixXcd decode(const Eigen::MatrixXcd &noisyData, const ProblemParameters myParams, const QAMConstellation myQAM) = 0; // Pure virtual function
   virtual ~Decoder() = default;
 };
 
