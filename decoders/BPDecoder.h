@@ -4,11 +4,9 @@
 
 #include "Decoder.h"
 
-class SimpleDecoder : public Decoder {
+class BPDecoder : public Decoder {
 public:
-  virtual Eigen::MatrixXcd decode(const Eigen::MatrixXcd &noisyData) override {
-    return noisyData * 100; // TODO - remove placeholder line
-  }
+  virtual Eigen::MatrixXcd decode(const Eigen::MatrixXcd &noisyData) override;
 };
 
 #endif // BPDECODER_H

@@ -75,6 +75,10 @@ void QAMConstellation::DrawConstellation() const {
   }
 }
 
+std::vector<std::vector<int>> QAMConstellation::GetConstellation() const {
+  return Constellation;
+}
+
 void QAMConstellation::DrawGrayCode() const {
   const int N = params->GetN();
   for (int i = 0; i < N; i++) {

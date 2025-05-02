@@ -40,6 +40,9 @@ public:
   // Draws the constellation to assist testing and debugging
   void DrawConstellation() const;
 
+  // Outputs the constellation for decoder
+  std::vector<std::vector<int>> GetConstellation() const;
+
   // Draws the constellation in binary to verify gray-code
   void DrawGrayCode() const;
 
