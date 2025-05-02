@@ -6,7 +6,8 @@
 // Initializer + Constructor
 QAMConstellation::QAMConstellation(const ProblemParameters *params)
     : Constellation(params->GetN(), std::vector<int>(params->GetN())),
-      encodingMap(params->GetM()), params(params) {
+      encodingMap(params->GetM()), decodingMap(params->GetM()), params(params) {
+  // TODO - generate decodingMap during construction
   // Get constants
   const int M = params->GetM();
   const int N = params->GetN();
@@ -75,8 +76,12 @@ void QAMConstellation::DrawConstellation() const {
   }
 }
 
-std::vector<std::vector<int>> QAMConstellation::GetConstellation() const {
-  return Constellation;
+std::unordered_map<int, std::complex<double>> QAMConstellation::GetMapInt2Complex() const {
+  return encodingMap;
+}
+
+std::unordered_map<std::complex<double>, int> QAMConstellation::GetMapComplex2Int() const {
+  return decodingMap;
 }
 
 void QAMConstellation::DrawGrayCode() const {
