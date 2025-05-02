@@ -2,11 +2,17 @@ cmake_minimum_required(VERSION 3.24)
 project(Iterative_MIMO_Project)
 
 set(CMAKE_CXX_STANDARD 17)
-include_directories(./include ./eigen-3.4.0 ./decoders)
 
-# Automatically detect all decoders
-# This means future users only need to add the .cpp and never touch CmakeLists.txt
-#aux_source_directory(decoders DECODER_FILES)
+# Collect all .h files
+include_directories(./include ./eigen-3.4.0)
+
+# TODO - figure out how to use this without breaking everything
+# Collect all .cpp files to run things
+file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
+# Collect all test files .cpp
+file(GLOB TESTS ${PROJECT_SOURCE_DIR}/tests/*.cpp)
+# Collect all the decoders .cpp
+file(GLOB DECODERS ${PROJECT_SOURCE_DIR}/decoders/*.cpp)
 
 # Add main executable
 # TODO - change this once finally done

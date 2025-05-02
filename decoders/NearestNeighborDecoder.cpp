@@ -1,7 +1,10 @@
 // @author Alexandre P.J. Dixneuf
 
-#include "NearestNeighborDecoder.h"
+#include "Decoder.h"
 
-Eigen::MatrixXcd NearestNeighborDecoder::decode(const Eigen::MatrixXcd &noisyData, const ) {
-
-}
+class NearestNeighborDecoder : public Decoder {
+public:
+  virtual Eigen::MatrixXcd decode(const Eigen::MatrixXcd &noisyData, const ProblemParameters myParams, const QAMConstellation myQAM) override {
+    return noisyData; // TODO - added decoder
+  }
+};
