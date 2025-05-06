@@ -43,9 +43,6 @@ public:
   // Outputs the constellation map for decoder, int to complex
   std::unordered_map<int, std::complex<double>> GetMapInt2Complex() const;
 
-  // Outputs the constellation map for decoder, complex to int
-  std::unordered_map<std::complex<double>, int> GetMapComplex2Int() const;
-
   // Draws the constellation in binary to verify gray-code
   void DrawGrayCode() const;
 
@@ -62,8 +59,6 @@ public:
 private:
   std::vector<std::vector<int>> Constellation;
   std::unordered_map<int, std::complex<double>> encodingMap;
-  // TODO - generate decodingMap during construction
-  std::unordered_map<std::complex<double>, int> decodingMap;
   const ProblemParameters *params;
 };
 

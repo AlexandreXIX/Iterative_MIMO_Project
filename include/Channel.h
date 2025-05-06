@@ -32,9 +32,11 @@ public:
   void ChannelPropagation(MySignal &transmitted) const;
 
   // Output the fading condition matrix H
+  // NOTE: This is allowed since CSIR assumes knowledge of H
   MatrixType GetH() const;
 
   // Output the noise matrix Z
+  // NOTE: This should not be used, CSIR does not assume noise is known
   MatrixType GetZ() const;
 
   // Outputs the problem parameters pointer to verify

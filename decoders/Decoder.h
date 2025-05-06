@@ -4,7 +4,8 @@
 #define DECODER_H
 
 #include <Eigen/Dense>
-#include "../include/QAMConstellation.h"
+#include "QAMConstellation.h"
+#include "Channel.h"
 
 
 /**
@@ -16,7 +17,9 @@
 
 class Decoder {
 public:
-  virtual Eigen::MatrixXcd decode(const Eigen::MatrixXcd &noisyData, const ProblemParameters myParams, const QAMConstellation myQAM) = 0; // Pure virtual function
+  // TODO - create a unified constructor so that any future coder can assume the variables already exist
+  // Decoder(const ProblemParameters *params);
+  virtual Eigen::MatrixXcd decode(const Eigen::MatrixXcd &Y, const ProblemParameters &myParams, const QAMConstellation &myQAM, const Channel &myChannel) = 0; // Pure virtual function
   virtual ~Decoder() = default;
 };
 

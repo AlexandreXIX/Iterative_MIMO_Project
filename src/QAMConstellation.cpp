@@ -6,7 +6,7 @@
 // Initializer + Constructor
 QAMConstellation::QAMConstellation(const ProblemParameters *params)
     : Constellation(params->GetN(), std::vector<int>(params->GetN())),
-      encodingMap(params->GetM()), decodingMap(params->GetM()), params(params) {
+      encodingMap(params->GetM()), params(params) {
   // TODO - generate decodingMap during construction
   // Get constants
   const int M = params->GetM();
@@ -62,11 +62,6 @@ void QAMConstellation::QAMEncoding(MySignal &mySignal) {
   mySignal.AlterData(X);
 }
 
-// Converts Signal complex to int
-void QAMConstellation::QAMDecoding(MySignal &mySignal) {
-  // TODO - complete
-}
-
 void QAMConstellation::DrawConstellation() const {
   for (int i = 0; i < params->GetN(); i++) {
     for (int j = 0; j < params->GetN(); j++) {
@@ -78,10 +73,6 @@ void QAMConstellation::DrawConstellation() const {
 
 std::unordered_map<int, std::complex<double>> QAMConstellation::GetMapInt2Complex() const {
   return encodingMap;
-}
-
-std::unordered_map<std::complex<double>, int> QAMConstellation::GetMapComplex2Int() const {
-  return decodingMap;
 }
 
 void QAMConstellation::DrawGrayCode() const {
