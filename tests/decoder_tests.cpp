@@ -27,12 +27,15 @@ bool Test1() {
   // Encode with QAM
   Q.QAMEncoding(original);
   Q.QAMEncoding(copy);
+  // TODO - remove after testing
+  std::cout << "Original: " << std::endl;
+  std::cout << original.CopyData() << std::endl;
   // Get second channel to propagate
   channel.ChannelPropagation(copy);
   BPDecoder decoder;
   Eigen::MatrixXcd decoded = decoder.decode(copy.CopyData(), p, Q, channel);
-  std::cout << original.CopyData();
-  std::cout << decoded;
+  std::cout << "Decoded: " << std::endl;
+  std::cout << decoded << std::endl;
   return true;
 }
 

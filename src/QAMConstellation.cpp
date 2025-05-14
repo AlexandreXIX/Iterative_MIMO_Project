@@ -18,7 +18,7 @@ QAMConstellation::QAMConstellation(const ProblemParameters *params)
   for (int i = 0; i < M; i++) {
     tmpVector[i] = (i ^ (i >> 1)); // Generating Gray code
   }
-  // First generate the Constrellation as a grid
+  // First generate the Constellation as a grid
   int index = 0;
   for (int i = 0; i < N; i++) {
     // Left to right

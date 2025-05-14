@@ -71,7 +71,8 @@ public:
       int max_idx = std::max_element(messages[nt].begin(), messages[nt].end()) - messages[nt].begin();
       decoded(nt, 0) = constellation[symbolIndices[max_idx]];
     }
-
+    std::cout << "Decoded: " << std::endl;
+    std::cout << decoded << std::endl;
     return decoded;
   }
 };
