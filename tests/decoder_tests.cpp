@@ -16,7 +16,7 @@ std::string OutputTestResults(const bool testResult) {
 bool Test1() {
   constexpr int N_t = 2;
   constexpr int N_r = 3;
-  constexpr int T = 2;
+  constexpr int T = 5;
   constexpr int M = 16;
   const ProblemParameters p(N_t, N_r, T, M);
   MySignal original(&p);
@@ -27,15 +27,35 @@ bool Test1() {
   // Encode with QAM
   Q.QAMEncoding(original);
   Q.QAMEncoding(copy);
-  // TODO - remove after testing
-  std::cout << "Original: " << std::endl;
-  std::cout << original.CopyData() << std::endl;
+  Eigen::MatrixXcd trueSignal = original.CopyData();
+  std::cout << "True: " << std::endl; // TODO - remove after bug-fixing
+  std::cout << trueSignal << std::endl; // TODO - remove after bug-fixing
   // Get second channel to propagate
   channel.ChannelPropagation(copy);
   BPDecoder decoder;
   Eigen::MatrixXcd decoded = decoder.decode(copy.CopyData(), p, Q, channel);
-  std::cout << "Decoded: " << std::endl;
-  std::cout << decoded << std::endl;
+  std::cout << "Decoded: " << std::endl; // TODO - remove after bug-fixing
+  std::cout << decoded << std::endl; // TODO - remove after bug-fixing
+  // Accuracy testing
+  double sum = 0;
+  double count = decoded.rows() * decoded.cols() * p.GetN();
+  double tol = 1e-6;
+  // For each symbol in the message
+  for (int i = 0; i < decoded.rows(); ++i) {
+    for (int j = 0; j < decoded.cols(); ++j) {
+      // Find the closest signal (HARD)
+      // TODO - find the closest signal
+      // convert to bits (easy)
+      // TODO - convert to bits
+      // For each bit, find if equal to original
+      // TODO - change if statement to test the individual bits
+      if (std::abs(decoded(i,j) - trueSignal(i,j)) < tol) {
+        ++sum;
+      }
+    }
+  }
+  std::cout << "Accuracy: " << std::endl;
+  std::cout << sum/count << std::endl;
   return true;
 }
 
