@@ -1,7 +1,7 @@
 // @author Alexandre P.J. Dixneuf
 
-#include "Decoder.h"
 #include "../decoders/BPDecoder.cpp"
+#include "Decoder.h"
 #include <iostream>
 
 // Helper function to print out test results
@@ -28,14 +28,14 @@ bool Test1() {
   Q.QAMEncoding(original);
   Q.QAMEncoding(copy);
   Eigen::MatrixXcd trueSignal = original.CopyData();
-  std::cout << "True: " << std::endl; // TODO - remove after bug-fixing
+  std::cout << "True: " << std::endl;   // TODO - remove after bug-fixing
   std::cout << trueSignal << std::endl; // TODO - remove after bug-fixing
   // Get second channel to propagate
   channel.ChannelPropagation(copy);
   BPDecoder decoder;
   Eigen::MatrixXcd decoded = decoder.decode(copy.CopyData(), p, Q, channel);
   std::cout << "Decoded: " << std::endl; // TODO - remove after bug-fixing
-  std::cout << decoded << std::endl; // TODO - remove after bug-fixing
+  std::cout << decoded << std::endl;     // TODO - remove after bug-fixing
   // Accuracy testing
   double sum = 0;
   double count = decoded.rows() * decoded.cols() * p.GetN();
@@ -49,39 +49,27 @@ bool Test1() {
       // TODO - convert to bits
       // For each bit, find if equal to original
       // TODO - change if statement to test the individual bits
-      if (std::abs(decoded(i,j) - trueSignal(i,j)) < tol) {
+      if (std::abs(decoded(i, j) - trueSignal(i, j)) < tol) {
         ++sum;
       }
     }
   }
   std::cout << "Accuracy: " << std::endl;
-  std::cout << sum/count << std::endl;
+  std::cout << sum / count << std::endl;
   return true;
 }
 
-bool Test2() {
-  return false;
-}
+bool Test2() { return false; }
 
-bool Test3() {
-  return false;
-}
+bool Test3() { return false; }
 
-bool Test4() {
-  return false;
-}
+bool Test4() { return false; }
 
-bool Test5() {
-  return false;
-}
+bool Test5() { return false; }
 
-bool Test6() {
-  return false;
-}
+bool Test6() { return false; }
 
-bool Test7() {
-  return false;
-}
+bool Test7() { return false; }
 
 int main() {
   std::cout << "Decoder Tests: " << std::endl;

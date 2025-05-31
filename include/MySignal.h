@@ -26,50 +26,50 @@ using MatrixType =
 
 class MySignal {
 public:
-    // Initializer + Constructor
-    explicit MySignal(const ProblemParameters *params);
+  // Initializer + Constructor
+  explicit MySignal(const ProblemParameters *params);
 
-    // Copy Constructor (Deep-Copy) can be default, Eigen does deep copy by
-    // default
-    MySignal(const MySignal &rhs) = default;
+  // Copy Constructor (Deep-Copy) can be default, Eigen does deep copy by
+  // default
+  MySignal(const MySignal &rhs) = default;
 
-    // Assignment Operator (Deep-Copy) can be default, Eigen does deep copy by
-    // default
-    MySignal &operator=(const MySignal &rhs) = default;
+  // Assignment Operator (Deep-Copy) can be default, Eigen does deep copy by
+  // default
+  MySignal &operator=(const MySignal &rhs) = default;
 
-    // Destructor (default)
-    ~MySignal() = default;
+  // Destructor (default)
+  ~MySignal() = default;
 
-    // This function allows a new matrix of data to replace currently stored data.
-    // This is how we update the signal after channel propagation / encoding /
-    // decoding / etc.
-    void AlterData(const MatrixType &newMatrix);
+  // This function allows a new matrix of data to replace currently stored data.
+  // This is how we update the signal after channel propagation / encoding /
+  // decoding / etc.
+  void AlterData(const MatrixType &newMatrix);
 
-    // This functions compare they current signal to another signal to return how
-    // accurately they match
-    double VerifyAccuracy(const MatrixType &variant);
+  // This functions compare they current signal to another signal to return how
+  // accurately they match
+  double VerifyAccuracy(const MatrixType &variant);
 
-    // This function runs the verification check, but on Signal object, so must
-    // first extract data
-    double VerifyAccuracy(const MySignal &variant);
+  // This function runs the verification check, but on Signal object, so must
+  // first extract data
+  double VerifyAccuracy(const MySignal &variant);
 
-    // Outputs a new matrix that is a deep copy of the stored data
-    MatrixType CopyData();
+  // Outputs a new matrix that is a deep copy of the stored data
+  MatrixType CopyData();
 
-    // Outputs a pointer to the stored matrix
-    // This works by using: (*myMatrix) = ...; or (*myMatrix)(i,j) = ...;
-    MatrixType *GetData();
+  // Outputs a pointer to the stored matrix
+  // This works by using: (*myMatrix) = ...; or (*myMatrix)(i,j) = ...;
+  MatrixType *GetData();
 
-    // Outputs the problem parameters pointer to verify
-    const ProblemParameters *GetParameters() const;
+  // Outputs the problem parameters pointer to verify
+  const ProblemParameters *GetParameters() const;
 
-    // Checks if a given pointer is the same pointer as this object's parameters
-    // (output True means same)
-    bool SameParameters(const ProblemParameters *otherPointer) const;
+  // Checks if a given pointer is the same pointer as this object's parameters
+  // (output True means same)
+  bool SameParameters(const ProblemParameters *otherPointer) const;
 
 private:
-    MatrixType data;
-    const ProblemParameters *params;
+  MatrixType data;
+  const ProblemParameters *params;
 };
 
 #endif // MYSIGNAL_H

@@ -71,7 +71,8 @@ void QAMConstellation::DrawConstellation() const {
   }
 }
 
-std::unordered_map<int, std::complex<double>> QAMConstellation::GetMapInt2Complex() const {
+std::unordered_map<int, std::complex<double>>
+QAMConstellation::GetMapInt2Complex() const {
   return encodingMap;
 }
 
