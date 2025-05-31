@@ -6,17 +6,20 @@
 
 class BPDecoder : public Decoder {
 public:
-  virtual Eigen::MatrixXcd decode() override {
+  BPDecoder(const Eigen::MatrixXcd &Y, const ProblemParameters *params,
+            const QAMConstellation &myQAM, const Channel &myChannel)
+      : Decoder(Y, params, myQAM, myChannel) {}
 
-    int N_t = params->GetNt();
-    int N_r = params->GetNr();
-    int M = params->GetM();
-    int T = data.cols(); // number of timesteps or messages sent
-    const int num_iters = 5; // Number of BP iterations
+  void decode() override {
+    const int N_t = myParams->GetNt();
+    const int N_r = myParams->GetNr();
+    const int M = myParams->GetM();
+    const int T = data.cols(); // number of timesteps or messages sent
+    const int num_iters = 15;  // Number of BP iterations
     Eigen::MatrixXcd decoded(N_t, T);
 
     double noise_var = 1.0; // Static for now
-    double inv_noise = 1.0 / noise_var;
+    double inv_noise = 1.0; // noise_var;
 
     // Handle each time step independently
     for (int t = 0; t < T; ++t) {
