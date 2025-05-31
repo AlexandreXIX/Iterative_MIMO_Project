@@ -16,7 +16,7 @@ std::string OutputTestResults(const bool testResult) {
 bool Test1() {
   constexpr int N_t = 2;
   constexpr int N_r = 3;
-  constexpr int T = 5;
+  constexpr int T = 10;
   constexpr int M = 16;
   const ProblemParameters p(N_t, N_r, T, M);
   MySignal original(&p);
@@ -32,13 +32,13 @@ bool Test1() {
   std::cout << trueSignal << std::endl; // TODO - remove after bug-fixing
   // Get second channel to propagate
   channel.ChannelPropagation(copy);
-  BPDecoder decoder;
-  Eigen::MatrixXcd decoded = decoder.decode(copy.CopyData(), p, Q, channel);
+  BPDecoder decoder(copy.CopyData(), &p, Q, channel);
+  Eigen::MatrixXcd decoded = decoder.Run();
   std::cout << "Decoded: " << std::endl; // TODO - remove after bug-fixing
   std::cout << decoded << std::endl;     // TODO - remove after bug-fixing
   // Accuracy testing
   double sum = 0;
-  double count = decoded.rows() * decoded.cols() * p.GetN();
+  double count = decoded.rows() * decoded.cols();
   double tol = 1e-6;
   // For each symbol in the message
   for (int i = 0; i < decoded.rows(); ++i) {
@@ -55,7 +55,7 @@ bool Test1() {
     }
   }
   std::cout << "Accuracy: " << std::endl;
-  std::cout << sum / count << std::endl;
+  std::cout << (sum / count) * 100 << "%" << std::endl;
   return true;
 }
 
