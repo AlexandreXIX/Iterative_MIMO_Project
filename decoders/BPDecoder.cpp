@@ -45,12 +45,13 @@ public:
             // For every symbol
             for (int m = 0; m < M; ++m) {
               std::vector<double> log_terms;
-              const int combos = std::pow(M, N_t - 1);
+              // using uint32_t allows larger values (but not very useful since BP sucks)
+              const uint32_t combos = std::pow(M, N_t - 1);
               if (combos < 1) {
                 std::cout << "There are " << M << "^(" << N_t << "-1) combinations, so " << combos << std::endl;
                 throw std::invalid_argument("Number of cominations too large, BP uses M^(N_t-1).");
               }
-              for (int c = 0; c < combos; ++c) {
+              for (uint32_t c = 0; c < combos; ++c) {
                 std::vector<int> symbol_idx(N_t);
                 int temp = c;
                 for (int k = 0, j = 0; k < N_t; ++k) {

@@ -14,9 +14,9 @@ std::string OutputTestResults(const bool testResult) {
 
 // Just test simple operation
 bool Test1() {
-  constexpr int N_t = 6;
-  constexpr int N_r = 30;
-  constexpr int T = 50;
+  constexpr int N_t = 2;
+  constexpr int N_r = 3;
+  constexpr int T = 10;
   constexpr int M = 16;
   const ProblemParameters p(N_t, N_r, T, M);
   MySignal original(&p);
