@@ -46,6 +46,10 @@ public:
             for (int m = 0; m < M; ++m) {
               std::vector<double> log_terms;
               const int combos = std::pow(M, N_t - 1);
+              if (combos < 1) {
+                std::cout << "There are " << M << "^(" << N_t << "-1) combinations, so " << combos << std::endl;
+                throw std::invalid_argument("Number of cominations too large, BP uses M^(N_t-1).");
+              }
               for (int c = 0; c < combos; ++c) {
                 std::vector<int> symbol_idx(N_t);
                 int temp = c;
@@ -120,7 +124,10 @@ public:
 
   static double logSumExp(const std::vector<double>& log_probs) {
     // TODO - remove once testing is done
-    std::cout << log_probs.size() << std::endl;
+    int tmp = log_probs.size();
+    if (tmp == 0) {
+      std::cout << "HERE" << std::endl;
+    }
     double max_val = *std::max_element(log_probs.begin(), log_probs.end());
     double sum = 0.0;
     for (const auto& lp : log_probs) {
