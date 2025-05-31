@@ -23,47 +23,52 @@ class Decoder {
 public:
   Decoder(const Eigen::MatrixXcd &Y, const ProblemParameters *params,
           const QAMConstellation &myQAM, const Channel &myChannel)
-      : data(Y), params(params), constellation(myQAM.GetMapInt2Complex()),
+      : data(Y), myParams(params), constellation(myQAM.GetMapInt2Complex()),
         H(myChannel.GetH()), Z(myChannel.GetZ()) {}
-  void Run() {
-    decode();
-    complexToSymbol();
-  }
   virtual ~Decoder() = default;
 
-  virtual Eigen::MatrixXcd decode() = 0; // Pure virtual function
+  Eigen::MatrixXcd Run() {
+    decode();
+    complexToSymbol();
+    return data;
+  }
+
+  virtual void decode() = 0; // Pure virtual function
+
+  // Values must be public for override classes to access, doesn't matter since
+  // class can't be an object, only thing a user can do is call "Run()"
+  Eigen::MatrixXcd data;
+  const ProblemParameters *myParams;
+  std::unordered_map<int, std::complex<double>> constellation;
+  Eigen::MatrixXcd H;
+  Eigen::MatrixXcd Z;
+
+private:
   void complexToSymbol() {
     Eigen::MatrixXcd symbols = data;
     for (int i = 0; i < data.rows(); i++) {
       for (int j = 0; j < data.cols(); j++) {
         std::complex<double> current = data(i, j);
         std::complex<double> bestSymbol(999, 999);
-        double smallestDifference = 999;
-        for (int testIdx = 0; testIdx < params->GetM(); testIdx++) {
-          std::complex<double> tmp = constellation.at(0);
-          const double diff = std::sqrt(pow(current.real() - tmp.real(), 2) +
-                                        pow(current.imag() - tmp.imag(), 2));
-          if (diff < smallestDifference) {
+        double smallestDifference = std::numeric_limits<double>::max();
+        for (int testIdx = 0; testIdx < myParams->GetM(); testIdx++) {
+          std::complex<double> tmp = constellation.at(testIdx);
+          if (const double diff = std::abs(current - tmp);
+              diff < smallestDifference) {
             smallestDifference = diff;
             bestSymbol = tmp;
           }
         }
         if ((bestSymbol == std::complex<double>(999, 999)) ||
-            (smallestDifference == 999)) {
+            (smallestDifference == std::numeric_limits<double>::max())) {
           throw std::invalid_argument(
               "Error while finding best corresponding symbol.");
         }
         symbols(i, j) = bestSymbol;
       }
     }
+    data = symbols;
   }
-
-  Eigen::MatrixXcd data;
-  const ProblemParameters *params;
-  std::unordered_map<int, std::complex<double>> constellation;
-  Eigen::MatrixXcd H;
-  Eigen::MatrixXcd Z;
-private:
 };
 
 #endif // DECODER_H
