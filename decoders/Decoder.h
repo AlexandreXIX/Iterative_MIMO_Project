@@ -23,7 +23,7 @@ class Decoder {
 public:
   Decoder(const Eigen::MatrixXcd &Y, const ProblemParameters *params,
           const QAMConstellation &myQAM, const Channel &myChannel)
-      : data(Y), params(params), MapInt2Complex(myQAM.GetMapInt2Complex()),
+      : data(Y), params(params), constellation(myQAM.GetMapInt2Complex()),
         H(myChannel.GetH()), Z(myChannel.GetZ()) {}
   void Run() {
     decode();
@@ -31,7 +31,6 @@ public:
   }
   virtual ~Decoder() = default;
 
-private:
   virtual Eigen::MatrixXcd decode() = 0; // Pure virtual function
   void complexToSymbol() {
     Eigen::MatrixXcd symbols = data;
@@ -41,7 +40,7 @@ private:
         std::complex<double> bestSymbol(999, 999);
         double smallestDifference = 999;
         for (int testIdx = 0; testIdx < params->GetM(); testIdx++) {
-          std::complex<double> tmp = MapInt2Complex.at(0);
+          std::complex<double> tmp = constellation.at(0);
           const double diff = std::sqrt(pow(current.real() - tmp.real(), 2) +
                                         pow(current.imag() - tmp.imag(), 2));
           if (diff < smallestDifference) {
@@ -61,9 +60,10 @@ private:
 
   Eigen::MatrixXcd data;
   const ProblemParameters *params;
-  std::unordered_map<int, std::complex<double>> MapInt2Complex;
+  std::unordered_map<int, std::complex<double>> constellation;
   Eigen::MatrixXcd H;
   Eigen::MatrixXcd Z;
+private:
 };
 
 #endif // DECODER_H
