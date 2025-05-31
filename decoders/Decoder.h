@@ -12,7 +12,7 @@
  * @brief A virtual function to serve as a template for future decoders
  * @details This sets the requirements for a decoder function to work with the
  * rest of the code. It must be capable of handling a ProblemParameters object,
- * to get the necessary problem daa. In addition; it must take in and output
+ * to get the necessary problem daa. In addition, it must take in and output
  * Eigen::MatrixXcd as the input and output data. Lastly, it handles the
  * QAMConstellation class to be able to convert int to complex and complex to
  * int
@@ -23,7 +23,8 @@ class Decoder {
 public:
   Decoder(const Eigen::MatrixXcd &Y, const ProblemParameters *params,
           const QAMConstellation &myQAM, const Channel &myChannel)
-      : data(Y), params(params), MapInt2Complex(myQAM.GetMapInt2Complex()) {}
+      : data(Y), params(params), MapInt2Complex(myQAM.GetMapInt2Complex()),
+        H(myChannel.GetH()), Z(myChannel.GetZ()) {}
   void Run() {
     decode();
     complexToSymbol();
@@ -42,7 +43,7 @@ private:
         for (int testIdx = 0; testIdx < params->GetM(); testIdx++) {
           std::complex<double> tmp = MapInt2Complex.at(0);
           const double diff = std::sqrt(pow(current.real() - tmp.real(), 2) +
-                                  pow(current.imag() - tmp.imag(), 2));
+                                        pow(current.imag() - tmp.imag(), 2));
           if (diff < smallestDifference) {
             smallestDifference = diff;
             bestSymbol = tmp;
@@ -61,6 +62,8 @@ private:
   Eigen::MatrixXcd data;
   const ProblemParameters *params;
   std::unordered_map<int, std::complex<double>> MapInt2Complex;
+  Eigen::MatrixXcd H;
+  Eigen::MatrixXcd Z;
 };
 
 #endif // DECODER_H
