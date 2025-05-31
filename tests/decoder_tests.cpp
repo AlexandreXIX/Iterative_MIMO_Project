@@ -14,10 +14,10 @@ std::string OutputTestResults(const bool testResult) {
 
 // Just test simple operation
 bool Test1() {
-  constexpr int N_t = 2;
+  constexpr int N_t = 1;
   constexpr int N_r = 3;
-  constexpr int T = 10;
-  constexpr int M = 16;
+  constexpr int T = 5;
+  constexpr int M = 64;
   const ProblemParameters p(N_t, N_r, T, M);
   MySignal original(&p);
   QAMConstellation Q(&p);
