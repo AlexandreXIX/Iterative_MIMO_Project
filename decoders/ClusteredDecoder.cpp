@@ -1,11 +1,11 @@
 // @author Alexandre P.J. Dixneuf
 
 #include "Decoder.h"
-#include <vector>
-#include <random>
-#include <numeric>
 #include <algorithm>
 #include <iostream>
+#include <numeric>
+#include <random>
+#include <vector>
 
 // TODO - recheck code
 
@@ -59,7 +59,8 @@ public:
               y_eff -= H.col(j) * miu(j);
           }
 
-          Eigen::MatrixXcd R = H_sub.adjoint() * H_sub + noise_var * Eigen::MatrixXcd::Identity(K, K);
+          Eigen::MatrixXcd R = H_sub.adjoint() * H_sub +
+                               noise_var * Eigen::MatrixXcd::Identity(K, K);
           Eigen::VectorXcd rhs = H_sub.adjoint() * y_eff;
 
           Eigen::VectorXcd mu_update = R.ldlt().solve(rhs);

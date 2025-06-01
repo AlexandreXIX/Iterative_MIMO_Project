@@ -1,8 +1,8 @@
 // @author Alexandre P.J. Dixneuf
 
 #include "../decoders/BPDecoder.cpp"
-#include "../decoders/GaBPDecoder.cpp"
 #include "../decoders/ClusteredDecoder.cpp"
+#include "../decoders/GaBPDecoder.cpp"
 #include "Decoder.h"
 #include <iostream>
 
@@ -139,10 +139,10 @@ bool ClusteredTest() {
   return true;
 }
 
-
 int main() {
   std::cout << "Decoder Tests: " << std::endl;
   // std::cout << "BP Test: " << OutputTestResults(BPTest()) << std::endl;
   // std::cout << "GaBP Test: " << OutputTestResults(GaBPTest()) << std::endl;
-  std::cout << "Clustered Test: " << OutputTestResults(ClusteredTest()) << std::endl;
+  std::cout << "Clustered Test: " << OutputTestResults(ClusteredTest())
+            << std::endl;
 }
