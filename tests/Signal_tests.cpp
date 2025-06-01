@@ -22,14 +22,16 @@ bool Test1() {
     for (int N_r = 1; N_r <= 10; ++N_r) {
       for (int T = 1; T <= 10; T = T + 100) {
         for (int M = 4; M <= 2048; M = M * 4) {
-          ProblemParameters p(N_t, N_r, T, M);
-          MySignal signal(&p);
-          MatrixType myMatrix = signal.CopyData();
-          for (int i = 0; i < myMatrix.rows(); i++) {
-            for (int j = 0; j < myMatrix.cols(); j++) {
-              if ((myMatrix(i, j).real() < 0) || (myMatrix(i, j).real() >= M) ||
-                  (myMatrix(i, j).imag() != 0)) {
-                return false;
+          for (int SNR = 1; SNR <= 10; ++SNR) {
+            ProblemParameters p(N_t, N_r, T, M, SNR);
+            MySignal signal(&p);
+            MatrixType myMatrix = signal.CopyData();
+            for (int i = 0; i < myMatrix.rows(); i++) {
+              for (int j = 0; j < myMatrix.cols(); j++) {
+                if ((myMatrix(i, j).real() < 0) || (myMatrix(i, j).real() >= M) ||
+                    (myMatrix(i, j).imag() != 0)) {
+                  return false;
+                }
               }
             }
           }
@@ -43,9 +45,9 @@ bool Test1() {
 // Verify that copying a MySignal generates a new object but the same
 // ProblemParameters pointer (assignment + copy)
 bool Test2() {
-  constexpr int N_t = 1000, N_r = 1000, T = 10, M = 256;
+  constexpr int N_t = 1000, N_r = 1000, T = 10, M = 256, SNR = 10;
   // This test is independent of matrix size, so here are default test sizes
-  const ProblemParameters p(N_t, N_r, T, M);
+  const ProblemParameters p(N_t, N_r, T, M, SNR);
   const MySignal signal1(&p);
   MySignal signal2 = signal1;
   if (const ProblemParameters *firstPointer = signal1.GetParameters();
@@ -59,8 +61,8 @@ bool Test2() {
 // copy does not change the original On the other hand, verify that GetData
 // points to the data, and thus a change would change the object
 bool Test3() {
-  constexpr int N_t = 1000, N_r = 1000, T = 10, M = 256;
-  const ProblemParameters p(N_t, N_r, T, M);
+  constexpr int N_t = 1000, N_r = 1000, T = 10, M = 256, SNR = 10;
+  const ProblemParameters p(N_t, N_r, T, M, SNR);
   MySignal signal(&p);
   MatrixType myMatrix = signal.CopyData();
   // This will also be tested later, but additional tests always useful
@@ -84,8 +86,8 @@ bool Test4() {
   // Easy Mode:
   // constexpr int N_t = 2, N_r = 2, T = 2, M = 16;
   // Hard Mode:
-  constexpr int N_t = 1000, N_r = 1000, T = 10, M = 256;
-  const ProblemParameters p(N_t, N_r, T, M);
+  constexpr int N_t = 1000, N_r = 1000, T = 10, M = 256, SNR = 10;
+  const ProblemParameters p(N_t, N_r, T, M, SNR);
   MySignal originalSignal(&p);
   // Assignment Operator + CopyData
   MySignal firstCopy = originalSignal;
@@ -119,8 +121,8 @@ bool Test4() {
 // matrix and copied signal to check both versions
 bool Test5() {
   // Slightly smaller since I'm iterating through every entry multiple times
-  constexpr int N_t = 500, N_r = 500, T = 10, M = 256;
-  const ProblemParameters p(N_t, N_r, T, M);
+  constexpr int N_t = 500, N_r = 500, T = 10, M = 256, SNR = 10;
+  const ProblemParameters p(N_t, N_r, T, M, SNR);
   MySignal originalSignal(&p);
   MySignal alteredSignal = originalSignal;
   MatrixType myMatrix = originalSignal.CopyData();
@@ -157,10 +159,10 @@ bool Test5() {
 // Test SameParameters by generating two object with different parameters, two
 // with the same, and one with a copy
 bool Test6() {
-  constexpr int N_t = 2, N_r = 2, T = 5, M = 16;
-  const ProblemParameters p1(N_t, N_r, T, M);
+  constexpr int N_t = 2, N_r = 2, T = 5, M = 16, SNR = 10;
+  const ProblemParameters p1(N_t, N_r, T, M, SNR);
   // should check address of parameters, not values
-  const ProblemParameters p2(N_t, N_r, T, M);
+  const ProblemParameters p2(N_t, N_r, T, M, SNR);
   MySignal firstSignal(&p1);
   MySignal secondSignal(&p2);
   MySignal thirdSignal(firstSignal);
@@ -209,9 +211,9 @@ bool Test6() {
 
 // Test the exception throwing of VerifyData for matrix sizes
 bool Test7() {
-  constexpr int N_t = 1000, N_r = 1000, T = 100, M = 256;
-  const ProblemParameters p1(N_t, N_r, T, M);
-  const ProblemParameters p2(N_t + 1, N_r + 1, T + 1, M + 1);
+  constexpr int N_t = 1000, N_r = 1000, T = 100, M = 256, SNR = 10;
+  const ProblemParameters p1(N_t, N_r, T, M, SNR);
+  const ProblemParameters p2(N_t + 1, N_r + 1, T + 1, M + 1, SNR + 1);
   MySignal signal1(&p1);
   MySignal signal2(&p2);
   try {

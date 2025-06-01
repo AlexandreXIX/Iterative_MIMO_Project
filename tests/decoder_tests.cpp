@@ -18,7 +18,8 @@ bool Test1() {
   constexpr int N_r = 3;
   constexpr int T = 10;
   constexpr int M = 16;
-  const ProblemParameters p(N_t, N_r, T, M);
+  constexpr int SNR = 10;
+  const ProblemParameters p(N_t, N_r, T, M, SNR);
   MySignal original(&p);
   QAMConstellation Q(&p);
   Channel channel(&p);

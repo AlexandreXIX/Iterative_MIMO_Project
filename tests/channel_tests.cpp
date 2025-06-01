@@ -21,12 +21,13 @@ bool Test1() {
   constexpr int N_r = 100;
   constexpr int T = 100;
   constexpr int M = 64;
-  const ProblemParameters p1(N_t, N_r, T, M);
-  const ProblemParameters p2(N_t, N_r, T, M);
-  const ProblemParameters bad1(N_t + 1, N_r, T, M);
-  const ProblemParameters bad2(N_t, N_r + 1, T, M);
-  const ProblemParameters bad3(N_t, N_r, T + 1, M);
-  const ProblemParameters acceptable(N_t, N_r, T, M * 4);
+  constexpr int SNR = 10;
+  const ProblemParameters p1(N_t, N_r, T, M, SNR);
+  const ProblemParameters p2(N_t, N_r, T, M, SNR);
+  const ProblemParameters bad1(N_t + 1, N_r, T, M, SNR);
+  const ProblemParameters bad2(N_t, N_r + 1, T, M, SNR);
+  const ProblemParameters bad3(N_t, N_r, T + 1, M, SNR);
+  const ProblemParameters acceptable(N_t, N_r, T, M * 4, SNR);
   QAMConstellation Q(&p1);
   // Define original
   MySignal original(&p1);
@@ -88,7 +89,8 @@ bool Test2() {
   constexpr int N_r = 100;
   constexpr int T = 100;
   constexpr int M = 64;
-  const ProblemParameters p1(N_t, N_r, T, M);
+  constexpr int SNR = 10;
+  const ProblemParameters p1(N_t, N_r, T, M, SNR);
   MySignal original(&p1);
   QAMConstellation Q(&p1);
   Channel channel(&p1);
@@ -116,7 +118,8 @@ bool Test3() {
   constexpr int N_r = 100;
   constexpr int T = 100;
   constexpr int M = 64;
-  const ProblemParameters p1(N_t, N_r, T, M);
+  constexpr int SNR = 10;
+  const ProblemParameters p1(N_t, N_r, T, M, SNR);
   MySignal s(&p1);
   QAMConstellation Q(&p1);
   Channel channel(&p1);
