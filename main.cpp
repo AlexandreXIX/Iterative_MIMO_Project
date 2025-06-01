@@ -3,8 +3,8 @@
 #include "../decoders/BPDecoder.cpp"
 #include "../decoders/GaBPDecoder.cpp"
 #include "Decoder.h"
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
 // Configure these values for a base test case
 constexpr int base_N_t = 2;
@@ -13,15 +13,19 @@ constexpr int base_T = 10;
 constexpr int base_M = 16;
 constexpr int base_SNR = 40;
 
-// Basic tolerance, add this to all equality checks using double to avoid computer arithmetic errors
+// Basic tolerance, add this to all equality checks using double to avoid
+// computer arithmetic errors
 constexpr double tol = 1e-6;
 // How many trials each simulation should run
 constexpr int trial_count = 100;
 
-// TODO - If I had more time, would reverse to binary to do a binary accuracy check
+// TODO - If I had more time, would reverse to binary to do a binary accuracy
+// check
 
-// Returns the accuracy (in decimal) of the decoded matrix compared to the true data by checking how often the complex terms are equal
-double accuracyCheck_ComplexEquality(const Eigen::MatrixXcd &trueData, const Eigen::MatrixXcd &decodedData) {
+// Returns the accuracy (in decimal) of the decoded matrix compared to the true
+// data by checking how often the complex terms are equal
+double accuracyCheck_ComplexEquality(const Eigen::MatrixXcd &trueData,
+                                     const Eigen::MatrixXcd &decodedData) {
   double sum = 0;
   double count = trueData.rows() * trueData.cols();
   // For each symbol in the message
@@ -37,7 +41,6 @@ double accuracyCheck_ComplexEquality(const Eigen::MatrixXcd &trueData, const Eig
 
 int main() {
   std::ofstream outFile("../decoder_accuracy.csv");
-
 
   // First simulation, increasing N_t
   outFile << "Change in Accuracy as N_t Increases\n";
@@ -59,9 +62,9 @@ int main() {
       // Eigen::MatrixXcd BP_decoded = BP_decoder.Run();
       Eigen::MatrixXcd GaBP_decoded = GaBP_decoder.Run();
       // TODO - accuracy check
-      GaBPaccuracy += accuracyCheck_ComplexEquality(trueSignal,GaBP_decoded);
+      GaBPaccuracy += accuracyCheck_ComplexEquality(trueSignal, GaBP_decoded);
     }
-    outFile << N_t << "," << GaBPaccuracy/trial_count << "\n";
+    outFile << N_t << "," << GaBPaccuracy / trial_count << "\n";
   }
 
   // Second simulation, increasing N_r
@@ -84,11 +87,10 @@ int main() {
       // Eigen::MatrixXcd BP_decoded = BP_decoder.Run();
       Eigen::MatrixXcd GaBP_decoded = GaBP_decoder.Run();
       // TODO - accuracy check
-      GaBPaccuracy += accuracyCheck_ComplexEquality(trueSignal,GaBP_decoded);
+      GaBPaccuracy += accuracyCheck_ComplexEquality(trueSignal, GaBP_decoded);
     }
-    outFile << N_r << "," << GaBPaccuracy/trial_count << "\n";
+    outFile << N_r << "," << GaBPaccuracy / trial_count << "\n";
   }
-
 
   // Third simulation, increasing T
   outFile << "Change in Accuracy as T Increases\n";
@@ -110,11 +112,10 @@ int main() {
       // Eigen::MatrixXcd BP_decoded = BP_decoder.Run();
       Eigen::MatrixXcd GaBP_decoded = GaBP_decoder.Run();
       // TODO - accuracy check
-      GaBPaccuracy += accuracyCheck_ComplexEquality(trueSignal,GaBP_decoded);
+      GaBPaccuracy += accuracyCheck_ComplexEquality(trueSignal, GaBP_decoded);
     }
-    outFile << T << "," << GaBPaccuracy/trial_count << "\n";
+    outFile << T << "," << GaBPaccuracy / trial_count << "\n";
   }
-
 
   // Fourth simulation, increasing M
   outFile << "Change in Accuracy as M Increases\n";
@@ -136,11 +137,10 @@ int main() {
       // Eigen::MatrixXcd BP_decoded = BP_decoder.Run();
       Eigen::MatrixXcd GaBP_decoded = GaBP_decoder.Run();
       // TODO - accuracy check
-      GaBPaccuracy += accuracyCheck_ComplexEquality(trueSignal,GaBP_decoded);
+      GaBPaccuracy += accuracyCheck_ComplexEquality(trueSignal, GaBP_decoded);
     }
-    outFile << M << "," << GaBPaccuracy/trial_count << "\n";
+    outFile << M << "," << GaBPaccuracy / trial_count << "\n";
   }
-
 
   // Fifth simulation, increasing SNR
   outFile << "Change in Accuracy as SNR Increases\n";
@@ -162,11 +162,10 @@ int main() {
       // Eigen::MatrixXcd BP_decoded = BP_decoder.Run();
       Eigen::MatrixXcd GaBP_decoded = GaBP_decoder.Run();
       // TODO - accuracy check
-      GaBPaccuracy += accuracyCheck_ComplexEquality(trueSignal,GaBP_decoded);
+      GaBPaccuracy += accuracyCheck_ComplexEquality(trueSignal, GaBP_decoded);
     }
-    outFile << SNR << "," << GaBPaccuracy/trial_count << "\n";
+    outFile << SNR << "," << GaBPaccuracy / trial_count << "\n";
   }
-
 
   outFile.close();
   std::cout << "Results written to decoder_accuracy.csv\n";

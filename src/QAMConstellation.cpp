@@ -92,7 +92,6 @@ std::vector<std::vector<int>> QAMConstellation::GetConstellation() const {
   return Constellation;
 }
 
-
 void QAMConstellation::DrawEncoder() const {
   // Remove the normalization to draw cleaner
   const double normFactor = sqrt((2.0 * (params->GetM() - 1)) / 3.0);
