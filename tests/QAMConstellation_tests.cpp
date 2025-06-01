@@ -20,7 +20,7 @@ std::string OutputTestResults(const bool testResult) {
 bool Test0() {
   // Easy test = 16, better test = 64
   constexpr int M = 16;
-  const ProblemParameters p(2, 2, 2, M);
+  const ProblemParameters p(2, 2, 2, M, 1);
   QAMConstellation q(&p);
   std::string input;
   // First verify proper placing of ints
@@ -64,32 +64,31 @@ bool Test0() {
 }
 
 bool Test1() {
-  for (int N_t = 1; N_t <= 3; ++N_t) {
-    for (int N_r = 1; N_r <= 3; ++N_r) {
-      for (int M = 4; M <= 16; M = M * 4) {
-        for (int T = 1; T <= 3; ++T) {
-          for (int SNR = 1; SNR <= 3; ++SNR) {
+  for (int N_t = 1; N_t <= 10; ++N_t) {
+    for (int N_r = 1; N_r <= 10; ++N_r) {
+      for (int M = 4; M <= 256; M = M * 4) {
+        for (int T = 1; T <= 10; ++T) {
+          for (int SNR = 1; SNR <= 100; ++SNR) {
             const ProblemParameters p(N_t, N_r, T, M, SNR);
             QAMConstellation q(&p);
             std::unordered_map<int, std::complex<double>> constellation_map = q.GetMapInt2Complex();
             double power = 0;
             for (int m = 0; m < M; ++m) {
-              power += std::abs(constellation_map[m]);
+              power += std::norm(constellation_map[m]);
             }
-            if (power != SNR) {std::cout << "power = " << power << ", and SNR should be " << SNR << std::endl;}
+            power = power / M; // We want the average power, not total power
+            if (std::abs(power - SNR) > 0.01 * SNR) {return false;}
           }
         }
       }
     }
   }
-  return false;
+  return true;
 }
 
 int main() {
   std::cout << "QAM Constellation Tests: " << std::endl;
   std::cout << "Normalized Power Test: " << OutputTestResults(Test1()) << std::endl;
-
-
 
   std::string input;
   std::cout << "Would you like to perform manual testing? (Y/[other]): ";
