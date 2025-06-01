@@ -21,7 +21,8 @@ public:
 
     // Constellation converts to vector
     // Honestly, starting with a map was not the best move
-    // TODO - use the Constellation from QAMConstellation, although do I really want to touch things now that it works?
+    // TODO - use the Constellation from QAMConstellation, although do I really
+    // want to touch things now that it works?
     std::vector<std::complex<double>> constellation_points(M);
     for (int i = 0; i < M; ++i)
       constellation_points[i] = constellation[i];
@@ -33,9 +34,11 @@ public:
 
       // Added this to avoid issues with large numbers, logs necessart
       std::vector<std::vector<std::vector<double>>> log_msg_var_to_fact(
-        N_t, std::vector<std::vector<double>>(N_r, std::vector<double>(M, std::log(1.0 / M))));
+          N_t, std::vector<std::vector<double>>(
+                   N_r, std::vector<double>(M, std::log(1.0 / M))));
       std::vector<std::vector<std::vector<double>>> log_msg_fact_to_var(
-        N_r, std::vector<std::vector<double>>(N_t, std::vector<double>(M, 0.0)));
+          N_r,
+          std::vector<std::vector<double>>(N_t, std::vector<double>(M, 0.0)));
 
       // Go over every iteration
       for (int iter = 0; iter < num_iters; ++iter) {
@@ -46,12 +49,16 @@ public:
             // For every symbol
             for (int m = 0; m < M; ++m) {
               std::vector<double> log_terms;
-              // using uint32_t allows larger values (but not very useful since BP sucks)
+              // using uint32_t allows larger values (but not very useful since
+              // BP sucks)
               const uint32_t combos = std::pow(M, N_t - 1);
-              // Originally combos < 1, but uint32_t overflow would never give negative, so now this should work?
+              // Originally combos < 1, but uint32_t overflow would never give
+              // negative, so now this should work?
               if (combos < M) {
-                std::cout << "There are " << M << "^(" << N_t << "-1) combinations, so " << combos << std::endl;
-                throw std::invalid_argument("Number of cominations too large, BP uses M^(N_t-1).");
+                std::cout << "There are " << M << "^(" << N_t
+                          << "-1) combinations, so " << combos << std::endl;
+                throw std::invalid_argument(
+                    "Number of cominations too large, BP uses M^(N_t-1).");
               }
               for (uint32_t c = 0; c < combos; ++c) {
                 std::vector<int> symbol_idx(N_t);
@@ -65,7 +72,7 @@ public:
                   }
                 }
 
-                std::complex<double> sum = {0.0,0.0};
+                std::complex<double> sum = {0.0, 0.0};
                 double log_prior = 0.0;
                 for (int k = 0; k < N_t; ++k) {
                   sum += H(nr, k) * constellation_points[symbol_idx[k]];
@@ -117,21 +124,22 @@ public:
         }
 
         int best_idx = std::distance(
-          final_log_belief.begin(),
-          std::max_element(final_log_belief.begin(), final_log_belief.end()));
+            final_log_belief.begin(),
+            std::max_element(final_log_belief.begin(), final_log_belief.end()));
         decoded(t_var, t) = constellation_points[best_idx];
       }
     }
     data = decoded;
   }
 
-  static double logSumExp(const std::vector<double>& log_probs) {
+  static double logSumExp(const std::vector<double> &log_probs) {
     if (log_probs.size() == 0) {
-      throw std::invalid_argument("Empty container, probably due to overflow or underflow during code.");
+      throw std::invalid_argument("Empty container, probably due to overflow "
+                                  "or underflow during code.");
     }
     double max_val = *std::max_element(log_probs.begin(), log_probs.end());
     double sum = 0.0;
-    for (const auto& lp : log_probs) {
+    for (const auto &lp : log_probs) {
       sum += std::exp(lp - max_val);
     }
     return max_val + std::log(sum);

@@ -28,7 +28,8 @@ bool Test1() {
             MatrixType myMatrix = signal.CopyData();
             for (int i = 0; i < myMatrix.rows(); i++) {
               for (int j = 0; j < myMatrix.cols(); j++) {
-                if ((myMatrix(i, j).real() < 0) || (myMatrix(i, j).real() >= M) ||
+                if ((myMatrix(i, j).real() < 0) ||
+                    (myMatrix(i, j).real() >= M) ||
                     (myMatrix(i, j).imag() != 0)) {
                   return false;
                 }

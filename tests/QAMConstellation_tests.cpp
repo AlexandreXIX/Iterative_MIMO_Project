@@ -71,13 +71,16 @@ bool Test1() {
           for (int SNR = 1; SNR <= 100; ++SNR) {
             const ProblemParameters p(N_t, N_r, T, M, SNR);
             QAMConstellation q(&p);
-            std::unordered_map<int, std::complex<double>> constellation_map = q.GetMapInt2Complex();
+            std::unordered_map<int, std::complex<double>> constellation_map =
+                q.GetMapInt2Complex();
             double power = 0;
             for (int m = 0; m < M; ++m) {
               power += std::norm(constellation_map[m]);
             }
             power = power / M; // We want the average power, not total power
-            if (std::abs(power - SNR) > 0.01 * SNR) {return false;}
+            if (std::abs(power - SNR) > 0.01 * SNR) {
+              return false;
+            }
           }
         }
       }
@@ -88,7 +91,8 @@ bool Test1() {
 
 int main() {
   std::cout << "QAM Constellation Tests: " << std::endl;
-  std::cout << "Normalized Power Test: " << OutputTestResults(Test1()) << std::endl;
+  std::cout << "Normalized Power Test: " << OutputTestResults(Test1())
+            << std::endl;
 
   std::string input;
   std::cout << "Would you like to perform manual testing? (Y/[other]): ";

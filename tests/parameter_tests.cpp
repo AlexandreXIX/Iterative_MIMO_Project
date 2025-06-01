@@ -23,7 +23,8 @@ bool Test1() {
             for (int SNR = 1; SNR <= 1001; SNR = SNR + 100) {
               if (ProblemParameters p(N_t, N_r, T, M, SNR);
                   (p.GetNt() != N_t) || (p.GetNr() != N_r) || (p.GetT() != T) ||
-                  (p.GetM() != M) || (p.GetN() != std::sqrt(M)) || (p.GetSNR() != SNR)) {
+                  (p.GetM() != M) || (p.GetN() != std::sqrt(M)) ||
+                  (p.GetSNR() != SNR)) {
                 return false;
               }
             }

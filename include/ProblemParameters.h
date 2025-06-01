@@ -25,7 +25,8 @@
 class ProblemParameters {
 public:
   // Initializer + Constructor
-  ProblemParameters(const int &N_t, const int &N_r, const int &T, const int &M, const int &SNR);
+  ProblemParameters(const int &N_t, const int &N_r, const int &T, const int &M,
+                    const int &SNR);
 
   // Copy Constructor (deleted)
   ProblemParameters(const ProblemParameters &rhs) = delete;
