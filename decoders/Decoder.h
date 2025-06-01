@@ -24,7 +24,7 @@ public:
   Decoder(const Eigen::MatrixXcd &Y, const ProblemParameters *params,
           const QAMConstellation &myQAM, const Channel &myChannel)
       : data(Y), myParams(params), constellation(myQAM.GetMapInt2Complex()),
-        H(myChannel.GetH()), Z(myChannel.GetZ()) {}
+        H(myChannel.GetH()), Z(myChannel.GetZ()), num_iters(10) {}
   virtual ~Decoder() = default;
 
   Eigen::MatrixXcd Run() {
@@ -42,6 +42,7 @@ public:
   std::unordered_map<int, std::complex<double>> constellation;
   Eigen::MatrixXcd H;
   Eigen::MatrixXcd Z;
+  int num_iters;
 
 private:
   void complexToSymbol() {

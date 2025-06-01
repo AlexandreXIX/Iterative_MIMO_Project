@@ -15,7 +15,6 @@ public:
     const int N_r = myParams->GetNr();
     const int M = myParams->GetM();
     const int T = data.cols();
-    const int num_iters = 10;
     double noise_var = 1.0;
     double inv_noise = 1.0 / noise_var;
 

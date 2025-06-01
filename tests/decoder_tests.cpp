@@ -141,7 +141,7 @@ bool ClusteredTest() {
   return true;
 }
 
-bool LPDCCTest() {
+bool LDPCCTest() {
   constexpr int N_t = 2;
   constexpr int N_r = 3;
   constexpr int T = 10;

@@ -14,7 +14,6 @@ public:
     const int N_t = myParams->GetNt();
     const int N_r = myParams->GetNr();
     const int T = data.cols();
-    const int num_iters = 10;
     double noise_var = 1.0;
 
     Eigen::MatrixXcd decoded(N_t, T);

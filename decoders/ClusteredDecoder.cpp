@@ -20,7 +20,6 @@ public:
     const int N_r = myParams->GetNr();
     const int M = myParams->GetM();
     const int T = data.cols();
-    const int num_iters = 10;
     const int cluster_size = std::min(4, N_t); // Subgroup size
     double noise_var = 1.0;
 
