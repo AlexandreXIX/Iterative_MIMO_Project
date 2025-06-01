@@ -15,6 +15,8 @@ constexpr int base_SNR = 40;
 
 // Basic tolerance, add this to all equality checks using double to avoid computer arithmetic errors
 constexpr double tol = 1e-6;
+// How many trials each simulation should run
+constexpr int trial_count = 100;
 
 // TODO - If I had more time, would reverse to binary to do a binary accuracy check
 
@@ -41,44 +43,50 @@ int main() {
   outFile << "Change in Accuracy as N_t Increases\n";
   outFile << "N_t, GaBP Accuracy\n";
   for (int N_t = 1; N_t < 10; N_t++) {
-    const ProblemParameters p(N_t, base_N_r, base_T, base_M, base_SNR);
-    // TODO - Take this all out into separate function to avoid repetition
-    MySignal signal(&p);
-    QAMConstellation Q(&p);
-    Channel channel(&p);
-    Q.QAMEncoding(signal);
-    Eigen::MatrixXcd trueSignal = signal.CopyData();
-    channel.ChannelPropagation(signal);
-    // TODO - Take this all out into separate function to avoid repetition
-    // BPDecoder BP_decoder(signal.CopyData(), &p, Q, channel);
-    GaBPDecoder GaBP_decoder(signal.CopyData(), &p, Q, channel);
-    // Eigen::MatrixXcd BP_decoded = BP_decoder.Run();
-    Eigen::MatrixXcd GaBP_decoded = GaBP_decoder.Run();
-    // TODO - accuracy check
-    double accuracy = accuracyCheck_ComplexEquality(trueSignal,GaBP_decoded);
-    outFile << N_t << "," << accuracy << "\n";
+    double GaBPaccuracy = 0;
+    for (int trial = 0; trial < trial_count; ++trial) {
+      const ProblemParameters p(N_t, base_N_r, base_T, base_M, base_SNR);
+      // TODO - Take this all out into separate function to avoid repetition
+      MySignal signal(&p);
+      QAMConstellation Q(&p);
+      Channel channel(&p);
+      Q.QAMEncoding(signal);
+      Eigen::MatrixXcd trueSignal = signal.CopyData();
+      channel.ChannelPropagation(signal);
+      // TODO - Take this all out into separate function to avoid repetition
+      // BPDecoder BP_decoder(signal.CopyData(), &p, Q, channel);
+      GaBPDecoder GaBP_decoder(signal.CopyData(), &p, Q, channel);
+      // Eigen::MatrixXcd BP_decoded = BP_decoder.Run();
+      Eigen::MatrixXcd GaBP_decoded = GaBP_decoder.Run();
+      // TODO - accuracy check
+      GaBPaccuracy += accuracyCheck_ComplexEquality(trueSignal,GaBP_decoded);
+    }
+    outFile << N_t << "," << GaBPaccuracy/trial_count << "\n";
   }
 
   // Second simulation, increasing N_r
   outFile << "Change in Accuracy as N_r Increases\n";
   outFile << "N_r, GaBP Accuracy\n";
   for (int N_r = 1; N_r < 10; N_r++) {
-    const ProblemParameters p(base_N_t, N_r, base_T, base_M, base_SNR);
-    // TODO - Take this all out into separate function to avoid repetition
-    MySignal signal(&p);
-    QAMConstellation Q(&p);
-    Channel channel(&p);
-    Q.QAMEncoding(signal);
-    Eigen::MatrixXcd trueSignal = signal.CopyData();
-    channel.ChannelPropagation(signal);
-    // TODO - Take this all out into separate function to avoid repetition
-    // BPDecoder BP_decoder(signal.CopyData(), &p, Q, channel);
-    GaBPDecoder GaBP_decoder(signal.CopyData(), &p, Q, channel);
-    // Eigen::MatrixXcd BP_decoded = BP_decoder.Run();
-    Eigen::MatrixXcd GaBP_decoded = GaBP_decoder.Run();
-    // TODO - accuracy check
-    double accuracy = accuracyCheck_ComplexEquality(trueSignal,GaBP_decoded);
-    outFile << N_r << "," << accuracy << "\n";
+    double GaBPaccuracy = 0;
+    for (int trial = 0; trial < trial_count; ++trial) {
+      const ProblemParameters p(base_N_t, N_r, base_T, base_M, base_SNR);
+      // TODO - Take this all out into separate function to avoid repetition
+      MySignal signal(&p);
+      QAMConstellation Q(&p);
+      Channel channel(&p);
+      Q.QAMEncoding(signal);
+      Eigen::MatrixXcd trueSignal = signal.CopyData();
+      channel.ChannelPropagation(signal);
+      // TODO - Take this all out into separate function to avoid repetition
+      // BPDecoder BP_decoder(signal.CopyData(), &p, Q, channel);
+      GaBPDecoder GaBP_decoder(signal.CopyData(), &p, Q, channel);
+      // Eigen::MatrixXcd BP_decoded = BP_decoder.Run();
+      Eigen::MatrixXcd GaBP_decoded = GaBP_decoder.Run();
+      // TODO - accuracy check
+      GaBPaccuracy += accuracyCheck_ComplexEquality(trueSignal,GaBP_decoded);
+    }
+    outFile << N_r << "," << GaBPaccuracy/trial_count << "\n";
   }
 
 
@@ -86,22 +94,25 @@ int main() {
   outFile << "Change in Accuracy as T Increases\n";
   outFile << "T, GaBP Accuracy\n";
   for (int T = 1; T < 10; T++) {
-    const ProblemParameters p(base_N_t, base_N_r, T, base_M, base_SNR);
-    // TODO - Take this all out into separate function to avoid repetition
-    MySignal signal(&p);
-    QAMConstellation Q(&p);
-    Channel channel(&p);
-    Q.QAMEncoding(signal);
-    Eigen::MatrixXcd trueSignal = signal.CopyData();
-    channel.ChannelPropagation(signal);
-    // TODO - Take this all out into separate function to avoid repetition
-    // BPDecoder BP_decoder(signal.CopyData(), &p, Q, channel);
-    GaBPDecoder GaBP_decoder(signal.CopyData(), &p, Q, channel);
-    // Eigen::MatrixXcd BP_decoded = BP_decoder.Run();
-    Eigen::MatrixXcd GaBP_decoded = GaBP_decoder.Run();
-    // TODO - accuracy check
-    double accuracy = accuracyCheck_ComplexEquality(trueSignal,GaBP_decoded);
-    outFile << T << "," << accuracy << "\n";
+    double GaBPaccuracy = 0;
+    for (int trial = 0; trial < trial_count; ++trial) {
+      const ProblemParameters p(base_N_t, base_N_r, T, base_M, base_SNR);
+      // TODO - Take this all out into separate function to avoid repetition
+      MySignal signal(&p);
+      QAMConstellation Q(&p);
+      Channel channel(&p);
+      Q.QAMEncoding(signal);
+      Eigen::MatrixXcd trueSignal = signal.CopyData();
+      channel.ChannelPropagation(signal);
+      // TODO - Take this all out into separate function to avoid repetition
+      // BPDecoder BP_decoder(signal.CopyData(), &p, Q, channel);
+      GaBPDecoder GaBP_decoder(signal.CopyData(), &p, Q, channel);
+      // Eigen::MatrixXcd BP_decoded = BP_decoder.Run();
+      Eigen::MatrixXcd GaBP_decoded = GaBP_decoder.Run();
+      // TODO - accuracy check
+      GaBPaccuracy += accuracyCheck_ComplexEquality(trueSignal,GaBP_decoded);
+    }
+    outFile << T << "," << GaBPaccuracy/trial_count << "\n";
   }
 
 
@@ -109,22 +120,25 @@ int main() {
   outFile << "Change in Accuracy as M Increases\n";
   outFile << "M, GaBP Accuracy\n";
   for (int M = 4; M <= 256; M = M * 4) {
-    const ProblemParameters p(base_N_t, base_N_r, base_T, M, base_SNR);
-    // TODO - Take this all out into separate function to avoid repetition
-    MySignal signal(&p);
-    QAMConstellation Q(&p);
-    Channel channel(&p);
-    Q.QAMEncoding(signal);
-    Eigen::MatrixXcd trueSignal = signal.CopyData();
-    channel.ChannelPropagation(signal);
-    // TODO - Take this all out into separate function to avoid repetition
-    // BPDecoder BP_decoder(signal.CopyData(), &p, Q, channel);
-    GaBPDecoder GaBP_decoder(signal.CopyData(), &p, Q, channel);
-    // Eigen::MatrixXcd BP_decoded = BP_decoder.Run();
-    Eigen::MatrixXcd GaBP_decoded = GaBP_decoder.Run();
-    // TODO - accuracy check
-    double accuracy = accuracyCheck_ComplexEquality(trueSignal,GaBP_decoded);
-    outFile << M << "," << accuracy << "\n";
+    double GaBPaccuracy = 0;
+    for (int trial = 0; trial < trial_count; ++trial) {
+      const ProblemParameters p(base_N_t, base_N_r, base_T, M, base_SNR);
+      // TODO - Take this all out into separate function to avoid repetition
+      MySignal signal(&p);
+      QAMConstellation Q(&p);
+      Channel channel(&p);
+      Q.QAMEncoding(signal);
+      Eigen::MatrixXcd trueSignal = signal.CopyData();
+      channel.ChannelPropagation(signal);
+      // TODO - Take this all out into separate function to avoid repetition
+      // BPDecoder BP_decoder(signal.CopyData(), &p, Q, channel);
+      GaBPDecoder GaBP_decoder(signal.CopyData(), &p, Q, channel);
+      // Eigen::MatrixXcd BP_decoded = BP_decoder.Run();
+      Eigen::MatrixXcd GaBP_decoded = GaBP_decoder.Run();
+      // TODO - accuracy check
+      GaBPaccuracy += accuracyCheck_ComplexEquality(trueSignal,GaBP_decoded);
+    }
+    outFile << M << "," << GaBPaccuracy/trial_count << "\n";
   }
 
 
@@ -132,22 +146,25 @@ int main() {
   outFile << "Change in Accuracy as SNR Increases\n";
   outFile << "SNR, GaBP Accuracy\n";
   for (int SNR = 10; SNR <= 100; SNR = SNR + 10) {
-    const ProblemParameters p(base_N_t, base_N_r, base_T, base_M, SNR);
-    // TODO - Take this all out into separate function to avoid repetition
-    MySignal signal(&p);
-    QAMConstellation Q(&p);
-    Channel channel(&p);
-    Q.QAMEncoding(signal);
-    Eigen::MatrixXcd trueSignal = signal.CopyData();
-    channel.ChannelPropagation(signal);
-    // TODO - Take this all out into separate function to avoid repetition
-    // BPDecoder BP_decoder(signal.CopyData(), &p, Q, channel);
-    GaBPDecoder GaBP_decoder(signal.CopyData(), &p, Q, channel);
-    // Eigen::MatrixXcd BP_decoded = BP_decoder.Run();
-    Eigen::MatrixXcd GaBP_decoded = GaBP_decoder.Run();
-    // TODO - accuracy check
-    double accuracy = accuracyCheck_ComplexEquality(trueSignal,GaBP_decoded);
-    outFile << SNR << "," << accuracy << "\n";
+    double GaBPaccuracy = 0;
+    for (int trial = 0; trial < trial_count; ++trial) {
+      const ProblemParameters p(base_N_t, base_N_r, base_T, base_M, SNR);
+      // TODO - Take this all out into separate function to avoid repetition
+      MySignal signal(&p);
+      QAMConstellation Q(&p);
+      Channel channel(&p);
+      Q.QAMEncoding(signal);
+      Eigen::MatrixXcd trueSignal = signal.CopyData();
+      channel.ChannelPropagation(signal);
+      // TODO - Take this all out into separate function to avoid repetition
+      // BPDecoder BP_decoder(signal.CopyData(), &p, Q, channel);
+      GaBPDecoder GaBP_decoder(signal.CopyData(), &p, Q, channel);
+      // Eigen::MatrixXcd BP_decoded = BP_decoder.Run();
+      Eigen::MatrixXcd GaBP_decoded = GaBP_decoder.Run();
+      // TODO - accuracy check
+      GaBPaccuracy += accuracyCheck_ComplexEquality(trueSignal,GaBP_decoded);
+    }
+    outFile << SNR << "," << GaBPaccuracy/trial_count << "\n";
   }
 
 
