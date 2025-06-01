@@ -21,6 +21,7 @@ public:
 
     // Constellation converts to vector
     // Honestly, starting with a map was not the best move
+    // TODO - use the Constellation from QAMConstellation, although do I really want to touch things now that it works?
     std::vector<std::complex<double>> constellation_points(M);
     for (int i = 0; i < M; ++i)
       constellation_points[i] = constellation[i];
@@ -47,7 +48,8 @@ public:
               std::vector<double> log_terms;
               // using uint32_t allows larger values (but not very useful since BP sucks)
               const uint32_t combos = std::pow(M, N_t - 1);
-              if (combos < 1) {
+              // Originally combos < 1, but uint32_t overflow would never give negative, so now this should work?
+              if (combos < M) {
                 std::cout << "There are " << M << "^(" << N_t << "-1) combinations, so " << combos << std::endl;
                 throw std::invalid_argument("Number of cominations too large, BP uses M^(N_t-1).");
               }
@@ -124,10 +126,8 @@ public:
   }
 
   static double logSumExp(const std::vector<double>& log_probs) {
-    // TODO - remove once testing is done
-    int tmp = log_probs.size();
-    if (tmp == 0) {
-      std::cout << "HERE" << std::endl;
+    if (log_probs.size() == 0) {
+      throw std::invalid_argument("Empty container, probably due to overflow or underflow during code.");
     }
     double max_val = *std::max_element(log_probs.begin(), log_probs.end());
     double sum = 0.0;

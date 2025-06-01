@@ -17,6 +17,7 @@
  *        N_r: The number of receiving antennas
  *        T: The number of transmissions / the timespan of signal transmissions
  *        M: The modulation level. Wished it wasn't necessary for this
+ *        SNR: The signal-to-noise ratio, used when normalizing QAM
  * container, but if 256-QAM, message can't be >256 Note: The class also stores
  * N = sqrt(M), but calculates it itself
  */
@@ -24,7 +25,7 @@
 class ProblemParameters {
 public:
   // Initializer + Constructor
-  ProblemParameters(const int &N_t, const int &N_r, const int &T, const int &M);
+  ProblemParameters(const int &N_t, const int &N_r, const int &T, const int &M, const int &SNR);
 
   // Copy Constructor (deleted)
   ProblemParameters(const ProblemParameters &rhs) = delete;
@@ -45,12 +46,15 @@ public:
 
   [[nodiscard]] int GetN() const;
 
+  [[nodiscard]] int GetSNR() const;
+
 private:
   int N_t;
   int N_r;
   int T;
   int M;
   int N;
+  int SNR;
 };
 
 #endif // PROBLEMPARAMETERS_H

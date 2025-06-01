@@ -63,8 +63,34 @@ bool Test0() {
   return true;
 }
 
+bool Test1() {
+  for (int N_t = 1; N_t <= 3; ++N_t) {
+    for (int N_r = 1; N_r <= 3; ++N_r) {
+      for (int M = 4; M <= 16; M = M * 4) {
+        for (int T = 1; T <= 3; ++T) {
+          for (int SNR = 1; SNR <= 3; ++SNR) {
+            const ProblemParameters p(N_t, N_r, T, M, SNR);
+            QAMConstellation q(&p);
+            std::unordered_map<int, std::complex<double>> constellation_map = q.GetMapInt2Complex();
+            double power = 0;
+            for (int m = 0; m < M; ++m) {
+              power += std::abs(constellation_map[m]);
+            }
+            if (power != SNR) {std::cout << "power = " << power << ", and SNR should be " << SNR << std::endl;}
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
+
 int main() {
   std::cout << "QAM Constellation Tests: " << std::endl;
+  std::cout << "Normalized Power Test: " << OutputTestResults(Test1()) << std::endl;
+
+
+
   std::string input;
   std::cout << "Would you like to perform manual testing? (Y/[other]): ";
   std::cin >> input;

@@ -7,7 +7,6 @@
 QAMConstellation::QAMConstellation(const ProblemParameters *params)
     : Constellation(params->GetN(), std::vector<int>(params->GetN())),
       encodingMap(params->GetM()), params(params) {
-  // TODO - generate decodingMap during construction
   // Get constants
   const int M = params->GetM();
   const int N = params->GetN();
@@ -36,10 +35,8 @@ QAMConstellation::QAMConstellation(const ProblemParameters *params)
   }
   // We now convert this grid into an unordered map for encoding in 0(1)
   // Calculate constants
-  // Normalize the power to 1
-  // TODO - have an input P for final power
-  double P = 40.0;
-  const double normFactor = sqrt((2.0 * (M - 1)) / (3.0 * P));
+  // Normalize the power to SNR
+  const double normFactor = sqrt((2.0 * (M - 1)) / (3.0 * params->GetSNR()));
   // Find the maximum magnitude for a symbol
   const int max_mag = (N - 1);
   // Now iterate
