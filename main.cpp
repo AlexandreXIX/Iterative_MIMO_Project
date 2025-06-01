@@ -24,8 +24,8 @@ constexpr int M_min = 16;
 constexpr int SNR_min = 10;
 // Configure these for the maximum values of the simulations
 constexpr int N_t_max = 5;
-constexpr int N_r_max = 10;
-constexpr int T_max = 20;
+constexpr int N_r_max = 5;
+constexpr int T_max = 10;
 constexpr int M_max = 256;
 constexpr int SNR_max = 40;
 
@@ -157,7 +157,7 @@ int main() {
   std::cout << "Simulating Increasing T" << std::endl;
   outFile << "Change in Accuracy as T Increases\n";
   outFile << "T, BP Accuracy, GaBP Accuracy, Clustered Accuracy, LDPCC Accuracy, BICM Accuracy\n";
-  for (int T = T_min; T <= T_max; T++) {
+  for (int T = T_min; T <= T_max; T = T + 2) {
     std::cout << "T Simulation Status: " << (T*100.0)/T_max << "%" << std::endl;
     double BPaccuracy = 0;
     double GaBPaccuracy = 0;
