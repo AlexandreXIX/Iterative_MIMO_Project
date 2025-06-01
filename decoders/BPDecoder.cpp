@@ -54,7 +54,8 @@ public:
               const uint32_t combos = std::pow(M, N_t - 1);
               // Originally combos < 1, but uint32_t overflow would never give
               // negative, so now this should work?
-              if (combos < M) {
+              // Added additional check if == 1 when N_t - 1 = 0
+              if ((combos < M) && (N_t != 1)) {
                 std::cout << "There are " << M << "^(" << N_t
                           << "-1) combinations, so " << combos << std::endl;
                 throw std::invalid_argument(

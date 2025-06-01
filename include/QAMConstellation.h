@@ -46,6 +46,9 @@ public:
   // Draws the constellation in binary to verify gray-code
   void DrawGrayCode() const;
 
+  // Outputs the constellation to simplify binary accuracy testing in final code
+  std::vector<std::vector<int>> GetConstellation() const;
+
   // Print the complex values for the map for testing
   void DrawEncoder() const;
 
