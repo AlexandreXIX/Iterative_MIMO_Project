@@ -23,7 +23,7 @@ constexpr int T_min = 2;
 constexpr int M_min = 16;
 constexpr int SNR_min = 10;
 // Configure these for the maximum values of the simulations
-constexpr int N_t_max = 2;
+constexpr int N_t_max = 5;
 constexpr int N_r_max = 10;
 constexpr int T_max = 20;
 constexpr int M_max = 256;
@@ -34,7 +34,7 @@ constexpr int SNR_max = 40;
 // computer arithmetic errors
 constexpr double tol = 1e-6;
 // How many trials each simulation should run
-constexpr int trial_count = 10;
+constexpr int trial_count = 20;
 
 // TODO - If I had more time, would reverse to binary to do a binary accuracy
 // check
@@ -205,7 +205,7 @@ int main() {
       BPaccuracy += decodeUsingBP(trueSignal,receivedSignal, &p, Q, channel);
       GaBPaccuracy += decodeUsingGaBP(trueSignal,receivedSignal, &p, Q, channel);
       Clusteredaccuracy += decodeUsingClustered(trueSignal,receivedSignal, &p, Q, channel);
-      LDPCCaccuracy += decodeUsingLDPCC(trueSignal,receivedSignal, &p, Q, channel);
+      // LDPCCaccuracy += decodeUsingLDPCC(trueSignal,receivedSignal, &p, Q, channel);
       BICMaccuracy += decodeUsingBICM(trueSignal,receivedSignal, &p, Q, channel);
     }
     outFile << M << "," << BPaccuracy / trial_count << "," << GaBPaccuracy / trial_count << "," << Clusteredaccuracy / trial_count << "," << LDPCCaccuracy / trial_count << "," << BICMaccuracy / trial_count << "\n";
