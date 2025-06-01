@@ -28,19 +28,7 @@ Step 4: BICM
 Bit Interleaved Constellation Modulation, also known as Space-Time Bit-Interleaved Coded Modulation, should be
 implemented.
 
-Step 5: Segment Interaction
-------------
-
-The program is to simulation the interaction between the detector, demodulation, and decoder. We need to understand 
-the process between each to implement Iterative MIMO Detection.
-
-Step 6: Additional Investigation
-------------
-
-Should time permits, additional functions will be implemented and tested to compare and contrast different mechanisms.
-
-
-Step 7: Report
+Step 5: Report
 --------
 
 A short IEEE-styled report will be written detailing the principles involved in the project, the taken steps, and 
