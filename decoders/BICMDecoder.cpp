@@ -1,3 +1,5 @@
+// @author Alexandre P.J. Dixneuf
+
 #include "Decoder.h"
 #include <bitset>
 #include <cmath>
